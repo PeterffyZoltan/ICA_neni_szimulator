@@ -11,11 +11,11 @@ export class Character{
         this.spriteAnimationFrames = spriteAnimationFrames;
         this.CurrentAnimationFrameX = 0;
         this.CurrentAnimationFrameY = 0;
+        this.spriteWidth = spriteWidth;
+        this.spriteHeight = spriteHeight;
     }
 
     draw(){
-        this.ctx.drawImage(this.sprite, this.CurrentAnimationFrameX * this.width, this.CurrentAnimationFrameY * this.height, this.width, this.height, this.x, this.y, this.width, this.height);
-        
-
+        this.ctx.drawImage(this.sprite, this.CurrentAnimationFrameX * this.spriteWidth, this.CurrentAnimationFrameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
     }
 }
