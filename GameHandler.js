@@ -9,14 +9,15 @@ export class GameHandler{
         this.height = height;
         this.startGameLoop = this.startGameLoop.bind(this);
         this.GameStarted = false;
-        this.etelhordo = new Etelhordo(this.ctx,200,200,100);
+        this.etelhordok= [];
+        this.etelhordok.push(new Etelhordo(this.ctx,200,200,100));
 
     }
     startGameLoop(){
         this.ctx.clearRect(0, 0, this.width, this.height);
         this.Ica.update();
         this.Ica.draw();
-        this.etelhordo.draw();
+        this.etelhordok[0].draw();
         requestAnimationFrame(this.startGameLoop);
         
     }
