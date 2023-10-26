@@ -13,4 +13,25 @@ body{
 canvas{
     width: 100%;
 }
+h1 {
+    color: white;
+    font-family: sans-serif;
+    text-align: center;
+    font-size: 5vh;
+}
+#ICAtitle {
+    margin-top: 20vh;
+    margin-bottom: 2vh;
+}
+#simulatorTitle {
+    margin-bottom: 4vh;
+}
+#ICA {
+    width: 3vh;
+    height: 5vh;
+    margin: 0 auto;
+}
+#ICAimg {
+    object-fit: contain;
+}
 
