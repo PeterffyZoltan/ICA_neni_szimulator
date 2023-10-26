@@ -21,20 +21,5 @@ export class Character{
         this.ctx.drawImage(this.sprite, this.CurrentAnimationFrameX * this.spriteWidth, this.CurrentState?.sY  * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
     }
 
-    update(){
-        if(!this.CurrentState?.running)
-        {
-            return;
-        }
-        this.staggerCounter++;
-        if(this.staggerCounter == this.CurrentState.stagger){
-            this.staggerCounter = 0;
-            this.CurrentAnimationFrameX++;
-            if(this.CurrentAnimationFrameX == this.CurrentState.sXMax){
-                this.CurrentAnimationFrameX = 0;
-            }
-        }
-        this.x += this.CurrentState.speedX;
-        this.y += this.CurrentState.speedY;
-    }
+
 }
