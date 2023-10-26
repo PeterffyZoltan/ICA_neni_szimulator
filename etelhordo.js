@@ -10,7 +10,8 @@ export class Etelhordo{
         this.sizeY = sizeY;
         this.img = new Image();
         this.img.src =this.imagePath;
-        this.healthbar= new HealthBar(this.ctx,health,100,this.x,this.y+this.sizeY)
+        this.healthbar= new HealthBar(this.ctx,100,100,this.x,this.y+this.sizeY);
+        this.clang = new Audio('./assets/metalclang.mp3');
 
     }
     
@@ -19,10 +20,12 @@ export class Etelhordo{
         this.healthbar.draw();
     }
     update(){
-        
+        this.healthbar.update();
     }
     getHit(){
+        this.clang.play();
         console.log("Ica successfully szétbaszta az ételhordót")
+
     }
 
 }
