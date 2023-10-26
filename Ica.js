@@ -5,7 +5,9 @@ export class Ica extends Character{
         const spriteSrc = './assets/Ica_sprite.png';
         const speed = 10;
         const spriteAnimationFrames = {
-            run: {sXMax:8, sY:8, stagger:1},
+            run: {sXMax:8, sY:8, stagger:3},
+            hit: {sXMax:6, sY:12, stagger:3}
+
 
         };
 
@@ -21,23 +23,25 @@ export class Ica extends Character{
             this.CurrentState.running = true;
             if(this.inputHandler.isPressed('ArrowRight')){
                 this.CurrentState.speedX = this.speed;
-                this.CurrentState.speedY = 0;
                 this.CurrentState.sY = this.spriteAnimationFrames.run.sY+3;
             }
             else if(this.inputHandler.isPressed('ArrowLeft')){
                 this.CurrentState.speedX = -this.speed;
-                this.CurrentState.speedY = 0;
                 this.CurrentState.sY = this.spriteAnimationFrames.run.sY+1;
             }
-            if(this.inputHandler.isPressed('ArrowUp')){
+            else{
                 this.CurrentState.speedX = 0;
+            }
+            if(this.inputHandler.isPressed('ArrowUp')){
                 this.CurrentState.speedY = -this.speed;
                 this.CurrentState.sY = this.spriteAnimationFrames.run.sY;
             }
             else if(this.inputHandler.isPressed('ArrowDown')){
-                this.CurrentState.speedX = 0;
                 this.CurrentState.speedY = this.speed;
                 this.CurrentState.sY = this.spriteAnimationFrames.run.sY+2;
+            }
+            else{
+                this.CurrentState.speedY = 0;
             }
         }
         else{
