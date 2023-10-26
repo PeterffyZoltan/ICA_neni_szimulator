@@ -4,7 +4,7 @@ export class GameHandler{
     constructor(ctx, width, height){
         this.ctx = ctx;
         this.enemies = [];
-        this.Ica = new Ica(ctx, 0, 0, 128, 128);
+        this.Ica = new Ica(ctx, 0, 0, 128, 128, this);
         this.width = width;
         this.height = height;
         this.startGameLoop = this.startGameLoop.bind(this);
