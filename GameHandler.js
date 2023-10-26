@@ -10,14 +10,25 @@ export class GameHandler{
         this.startGameLoop = this.startGameLoop.bind(this);
         this.GameStarted = false;
         this.etelhordok= [];
-        this.etelhordok.push(new Etelhordo(this.ctx,200,200,100));
+        for (let num = 0; num < 5; num++) {
+            this.etelhordok.push(new Etelhordo(this.ctx,Math.random()*1500,Math.random()*900,100));
+            
+        }
+    
+
 
     }
     startGameLoop(){
         this.ctx.clearRect(0, 0, this.width, this.height);
         this.Ica.update();
         this.Ica.draw();
+        for (const etelhordo of this.etelhordok) {
+            etelhordo.draw();
+            etelhordo.update();
+        }
         this.etelhordok[0].draw();
+        this.etelhordok[0].update();
+
         requestAnimationFrame(this.startGameLoop);
         
     }

@@ -11,10 +11,13 @@ export class HealthBar{
     draw(){
         this.ctx.beginPath();
         this.ctx.rect(this.x, this.y, 100, 10);
-        this.ctx.fillStyle = "red";
+        this.ctx.fillStyle = "green";
         this.ctx.fill();
     }
     update(){
-
+        this.ctx.beginPath();
+        this.ctx.rect(this.x+this.health,this.y,this.maxHealth-this.health,9.8);
+        this.ctx.fillStyle ="red";
+        this.ctx.fill()
     }
 }
