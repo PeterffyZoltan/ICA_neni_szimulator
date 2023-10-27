@@ -12,7 +12,10 @@ export class Etelhordo{
         this.img.src =this.imagePath;
         this.healthbar= new HealthBar(this.ctx,100,100,this.x,this.y+this.sizeY);
         this.clang = new Audio('./assets/metalclang.mp3');
-
+        this.hitBoxStartX = this.x-sizeX/2;
+        this.hitBoxEndX = this.x+sizeX/2;
+        this.hitboxStartY = this.y+sizeY/2;
+        this.hitboxEndY=this.y-sizeY/2
     }
     
     draw(){
