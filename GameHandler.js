@@ -25,6 +25,7 @@ export class GameHandler{
         for (const etelhordo of this.etelhordok) {
             etelhordo.draw();
             etelhordo.update();
+            etelhordo.drawHitbox();
         }
         this.etelhordok[0].draw();
         this.etelhordok[0].update();
