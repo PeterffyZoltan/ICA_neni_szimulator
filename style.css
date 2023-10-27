@@ -34,4 +34,12 @@ h1 {
 #ICAimg {
     object-fit: contain;
 }
-
+#startButton {
+    display: flex;
+    margin: 10vh auto;
+    width: 40vh;
+    height: 10vh;
+    background-color: dimgray;
+    justify-content: center;
+    align-items: center;
+}
