@@ -1,5 +1,6 @@
 import {Character} from './Character.js';
 import {InputHandler} from './inputHandler.js';
+import {HealthBar} from './healthbar.js';
 export class Ica extends Character{
     constructor(ctx, x, y, width, height, gameHandler){
         const spriteSrc = './assets/Ica_sprite.png';
@@ -12,23 +13,39 @@ export class Ica extends Character{
         };
         super(ctx, x, y, width, height, spriteSrc, spriteAnimationFrames, speed);
         this.range = 100;
-        
+        this.healthbar = new HealthBar(this.ctx, 100, 100, this.hitbox.x-this.hitbox.width/4, this.hitbox.y+this.hitbox.height+10);
         this.gameHandler = gameHandler;
         this.CurrentState = {...this.spriteAnimationFrames.run , speedX: 0, speedY: 0, sY : 0 ,running: false, hitting: false};
         this.inputHandler = new InputHandler(['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', ' ']);
     }
+    draw(){
+        this.healthbar.draw();
+        this.healthbar.update();
+        super.draw();
+    } 
+
+    gotHit(){
+        this.healthbar.health -= 10;
+        
+        console.log(this.healthbar.health);
+        // if(this.healthbar.health <= 0){
+        //     this.gameHandler.gameOver();
+        // }
+
+       
+    }
 
     update(){
+        
         this.handleInput();
         if(!this.CurrentState?.running)
         {
             if(!this.CurrentState?.hitting) return;
-
+           
             
             
             
         }
-        
         this.updateSprite();
         if(this.hitbox.x < 0 && this.CurrentState.speedX < 0 || this.hitbox.x + this.hitbox.width > this.ctx.canvas.width && this.CurrentState.speedX > 0)
         {
@@ -41,6 +58,9 @@ export class Ica extends Character{
         
         this.x += this.CurrentState.speedX;
         this.y += this.CurrentState.speedY;
+        const hitbox = this.hitbox;
+        this.healthbar.x = hitbox.x-hitbox.width/4;
+        this.healthbar.y = hitbox.y + hitbox.height + 10;
 
     }
     handleInput(){
