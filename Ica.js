@@ -1,5 +1,6 @@
 import {Character} from './Character.js';
 import {InputHandler} from './inputHandler.js';
+import {HealthBar} from './healthbar.js';
 export class Ica extends Character{
     constructor(ctx, x, y, width, height, gameHandler){
         const spriteSrc = './assets/Ica_sprite.png';
@@ -11,27 +12,88 @@ export class Ica extends Character{
 
         };
         super(ctx, x, y, width, height, spriteSrc, spriteAnimationFrames, speed);
-
-
+        this.range = 100;
+        this.healthbar = new HealthBar(this.ctx, 100, 100, this.hitbox.x-this.hitbox.width/4, this.hitbox.y+this.hitbox.height+10);
         this.gameHandler = gameHandler;
         this.CurrentState = {...this.spriteAnimationFrames.run , speedX: 0, speedY: 0, sY : 0 ,running: false, hitting: false};
         this.inputHandler = new InputHandler(['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', ' ']);
     }
+    draw(){
+        this.drawHitbox();
+        this.healthbar.draw();
+        this.healthbar.update();
+        super.draw();
+    } 
+
+    gotHit(){
+        this.healthbar.health -= 10;
+        
+        console.log(this.healthbar.health);
+        // if(this.healthbar.health <= 0){
+        //     this.gameHandler.gameOver();
+        // }
+
+       
+    }
 
     update(){
+        
         this.handleInput();
         if(!this.CurrentState?.running)
         {
             if(!this.CurrentState?.hitting) return;
-
+           
             
             
             
         }
-        
         this.updateSprite();
+        
+        this.checkCollision();
         this.x += this.CurrentState.speedX;
         this.y += this.CurrentState.speedY;
+        const hitbox = this.hitbox;
+        this.healthbar.x = hitbox.x-hitbox.width/4;
+        this.healthbar.y = hitbox.y + hitbox.height + 10;
+
+    }
+
+    checkCollision(){
+        if(this.hitbox.x < 0 && this.CurrentState.speedX < 0 || this.hitbox.x + this.hitbox.width > this.ctx.canvas.width && this.CurrentState.speedX > 0)
+        {
+            this.CurrentState.speedX = 0;
+        }
+        if(this.hitbox.y < 0 && this.CurrentState.speedY < 0 || this.hitbox.y + this.hitbox.height > this.ctx.canvas.height && this.CurrentState.speedY > 0)
+        {
+            this.CurrentState.speedY = 0;
+        }
+
+        
+        const hitbox = {x: this.hitbox.x, y: this.hitbox.y, endX: this.hitbox.x+this.hitbox.width, endY: this.hitbox.y+this.hitbox.height};
+        this.gameHandler.etelhordok.forEach(etelhordo => {
+            
+            const etelhordoHitbox = {x: etelhordo.hitBoxStartX, y: etelhordo.hitboxStartY, endX: etelhordo.hitBoxEndX, endY: etelhordo.hitboxEndY};
+            if(etelhordoHitbox.x < hitbox.endX && etelhordoHitbox.endX > hitbox.x && etelhordoHitbox.y > hitbox.y && etelhordoHitbox.endY < hitbox.endY){
+               //cant go through etelhordo
+
+                if(this.CurrentState.speedX > 0 && hitbox.x < etelhordoHitbox.x){
+                    this.CurrentState.speedX = 0;
+                }
+                else if(this.CurrentState.speedX < 0 && hitbox.endX > etelhordoHitbox.endX){
+                    this.CurrentState.speedX = 0;
+                }
+
+                if(this.CurrentState.speedY > 0 && hitbox.y < etelhordoHitbox.y){
+                    this.CurrentState.speedY = 0;
+                }
+                else if(this.CurrentState.speedY < 0 && hitbox.endY > etelhordoHitbox.endY){
+                    this.CurrentState.speedY = 0;
+                }
+            }
+            
+
+        });
+
     }
     handleInput(){
         
@@ -100,7 +162,7 @@ export class Ica extends Character{
     checkHit(){
         //get the range of the hit if there is a character in that range, hit it
         console.log('hit');
-        let hitRange = this.HitRange;
+        let hitRange = this.hitRange;
         this.gameHandler.enemies.forEach(enemy => {
             if (
                 hitRange.x < enemy.x + enemy.width &&
@@ -117,9 +179,20 @@ export class Ica extends Character{
     }
 
     get hitRange(){
-        direction = this.CurrentState.sY%4;
+        const direction = this.CurrentState.sY%4;
+        console.log(direction);
+
+        
         
     }
-    
+
+
+    drawHitbox(){
+        this.ctx.fillStyle = 'red';
+        this.ctx.fillRect(this.hitbox.x, this.hitbox.y, this.hitbox.width, this.hitbox.height);
+    }
+    get hitbox(){
+        return {x: this.x+30, y: this.y+30, width: this.width-60, height: this.height-30};
+    }
 
 }
