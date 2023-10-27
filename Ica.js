@@ -11,8 +11,8 @@ export class Ica extends Character{
 
         };
         super(ctx, x, y, width, height, spriteSrc, spriteAnimationFrames, speed);
-
-
+        this.range = 100;
+        
         this.gameHandler = gameHandler;
         this.CurrentState = {...this.spriteAnimationFrames.run , speedX: 0, speedY: 0, sY : 0 ,running: false, hitting: false};
         this.inputHandler = new InputHandler(['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', ' ']);
@@ -30,8 +30,18 @@ export class Ica extends Character{
         }
         
         this.updateSprite();
+        if(this.hitbox.x < 0 && this.CurrentState.speedX < 0 || this.hitbox.x + this.hitbox.width > this.ctx.canvas.width && this.CurrentState.speedX > 0)
+        {
+            this.CurrentState.speedX = 0;
+        }
+        if(this.hitbox.y < 0 && this.CurrentState.speedY < 0 || this.hitbox.y + this.hitbox.height > this.ctx.canvas.height && this.CurrentState.speedY > 0)
+        {
+            this.CurrentState.speedY = 0;
+        }
+        
         this.x += this.CurrentState.speedX;
         this.y += this.CurrentState.speedY;
+
     }
     handleInput(){
         
@@ -100,7 +110,7 @@ export class Ica extends Character{
     checkHit(){
         //get the range of the hit if there is a character in that range, hit it
         console.log('hit');
-        let hitRange = this.HitRange;
+        let hitRange = this.hitRange;
         this.gameHandler.enemies.forEach(enemy => {
             if (
                 hitRange.x < enemy.x + enemy.width &&
@@ -117,9 +127,20 @@ export class Ica extends Character{
     }
 
     get hitRange(){
-        direction = this.CurrentState.sY%4;
+        const direction = this.CurrentState.sY%4;
+        console.log(direction);
+
+        
         
     }
-    
+
+
+    drawHitbox(){
+        this.ctx.fillStyle = 'red';
+        this.ctx.fillRect(this.hitbox.x, this.hitbox.y, this.hitbox.width, this.hitbox.height);
+    }
+    get hitbox(){
+        return {x: this.x+30, y: this.y+30, width: this.width-60, height: this.height-30};
+    }
 
 }
