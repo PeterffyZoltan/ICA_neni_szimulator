@@ -19,6 +19,7 @@ export class Ica extends Character{
         this.inputHandler = new InputHandler(['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', ' ']);
     }
     draw(){
+        this.drawHitbox();
         this.healthbar.draw();
         this.healthbar.update();
         super.draw();
@@ -47,6 +48,17 @@ export class Ica extends Character{
             
         }
         this.updateSprite();
+        
+        this.checkCollision();
+        this.x += this.CurrentState.speedX;
+        this.y += this.CurrentState.speedY;
+        const hitbox = this.hitbox;
+        this.healthbar.x = hitbox.x-hitbox.width/4;
+        this.healthbar.y = hitbox.y + hitbox.height + 10;
+
+    }
+
+    checkCollision(){
         if(this.hitbox.x < 0 && this.CurrentState.speedX < 0 || this.hitbox.x + this.hitbox.width > this.ctx.canvas.width && this.CurrentState.speedX > 0)
         {
             this.CurrentState.speedX = 0;
@@ -55,12 +67,32 @@ export class Ica extends Character{
         {
             this.CurrentState.speedY = 0;
         }
+
         
-        this.x += this.CurrentState.speedX;
-        this.y += this.CurrentState.speedY;
-        const hitbox = this.hitbox;
-        this.healthbar.x = hitbox.x-hitbox.width/4;
-        this.healthbar.y = hitbox.y + hitbox.height + 10;
+        const hitbox = {x: this.hitbox.x, y: this.hitbox.y, endX: this.hitbox.x+this.hitbox.width, endY: this.hitbox.y+this.hitbox.height};
+        this.gameHandler.etelhordok.forEach(etelhordo => {
+            
+            const etelhordoHitbox = {x: etelhordo.hitBoxStartX, y: etelhordo.hitboxStartY, endX: etelhordo.hitBoxEndX, endY: etelhordo.hitboxEndY};
+            if(etelhordoHitbox.x < hitbox.endX && etelhordoHitbox.endX > hitbox.x && etelhordoHitbox.y > hitbox.y && etelhordoHitbox.endY < hitbox.endY){
+               //cant go through etelhordo
+
+                if(this.CurrentState.speedX > 0 && hitbox.x < etelhordoHitbox.x){
+                    this.CurrentState.speedX = 0;
+                }
+                else if(this.CurrentState.speedX < 0 && hitbox.endX > etelhordoHitbox.endX){
+                    this.CurrentState.speedX = 0;
+                }
+
+                if(this.CurrentState.speedY > 0 && hitbox.y < etelhordoHitbox.y){
+                    this.CurrentState.speedY = 0;
+                }
+                else if(this.CurrentState.speedY < 0 && hitbox.endY > etelhordoHitbox.endY){
+                    this.CurrentState.speedY = 0;
+                }
+            }
+            
+
+        });
 
     }
     handleInput(){
