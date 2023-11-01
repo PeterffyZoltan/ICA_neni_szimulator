@@ -73,20 +73,27 @@ export class Ica extends Character{
         this.gameHandler.etelhordok.forEach(etelhordo => {
             
             const etelhordoHitbox = {x: etelhordo.hitBoxStartX, y: etelhordo.hitboxStartY, endX: etelhordo.hitBoxEndX, endY: etelhordo.hitboxEndY};
-            if(etelhordoHitbox.x < hitbox.endX && etelhordoHitbox.endX > hitbox.x && etelhordoHitbox.y > hitbox.y && etelhordoHitbox.endY < hitbox.endY){
+            if(etelhordoHitbox.x <= hitbox.endX 
+                && etelhordoHitbox.endX >= hitbox.x 
+                && etelhordoHitbox.endY >= hitbox.y 
+                && etelhordoHitbox.y <= hitbox.endY){
                //cant go through etelhordo
-
-                if(this.CurrentState.speedX > 0 && hitbox.x < etelhordoHitbox.x){
+                console.log('colision')
+                hitbox.x += this.CurrentState.speedX;
+                hitbox.y += this.CurrentState.speedY;
+                hitbox.endX += this.CurrentState.speedX;
+                hitbox.endY += this.CurrentState.speedY;
+                if(this.CurrentState.speedX >= 0 && hitbox.x <= etelhordoHitbox.x){
                     this.CurrentState.speedX = 0;
                 }
-                else if(this.CurrentState.speedX < 0 && hitbox.endX > etelhordoHitbox.endX){
+                else if(this.CurrentState.speedX <= 0 && hitbox.endX >= etelhordoHitbox.endX){
                     this.CurrentState.speedX = 0;
                 }
 
-                if(this.CurrentState.speedY > 0 && hitbox.y < etelhordoHitbox.y){
+                if(this.CurrentState.speedY >= 0 && hitbox.y <= etelhordoHitbox.y){
                     this.CurrentState.speedY = 0;
                 }
-                else if(this.CurrentState.speedY < 0 && hitbox.endY > etelhordoHitbox.endY){
+                else if(this.CurrentState.speedY <= 0 && hitbox.endY >= etelhordoHitbox.endY){
                     this.CurrentState.speedY = 0;
                 }
             }
@@ -163,19 +170,19 @@ export class Ica extends Character{
         //get the range of the hit if there is a character in that range, hit it
         console.log('hit');
         let hitRange = this.hitRange;
-        this.gameHandler.enemies.forEach(enemy => {
-            if (
-                hitRange.x < enemy.x + enemy.width &&
-                hitRange.x + hitRange.width > enemy.x &&
-                hitRange.y < enemy.y + enemy.height &&
-                hitRange.y + hitRange.height > enemy.y
+        // this.gameHandler.etelhordok.forEach(enemy => {
+        //     if (
+        //         hitRange.x < enemy.x + enemy.width &&
+        //         hitRange.x + hitRange.width > enemy.x &&
+        //         hitRange.y < enemy.y + enemy.height &&
+        //         hitRange.y + hitRange.height > enemy.y
 
-            )
-            {
+        //     )
+        //     {
                 
-                enemy.hit();
-            }
-        });
+        //         enemy.hit();
+        //     }
+        // });
     }
 
     get hitRange(){
