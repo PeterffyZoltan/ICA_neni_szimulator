@@ -20,26 +20,40 @@ h1 {
     font-size: 5vh;
 }
 #ICAtitle {
-    margin-top: 20vh;
+    margin-top: 15vh;
     margin-bottom: 2vh;
 }
 #simulatorTitle {
-    margin-bottom: 4vh;
+    margin-bottom: 7vh;
 }
 #ICA {
-    width: 3vh;
-    height: 5vh;
+    width: 165px;
+    height: 200px;
     margin: 0 auto;
 }
 #ICAimg {
-    object-fit: contain;
+    display: block;
+    margin: 0 auto;
 }
+
 #startButton {
     display: flex;
-    margin: 10vh auto;
+    margin: 9vh auto;
     width: 40vh;
     height: 10vh;
-    background-color: dimgray;
+    background: linear-gradient(90deg, rgba(255, 215, 0, 0.6) 0%, rgba(255, 215, 0, 0.6) 50%, rgba(255, 215, 0, 0.8) 50%, rgba(255, 215, 0, 0.8) 100%);
+    background-size: 200% 100%;
+    background-position: 100% 0;
     justify-content: center;
     align-items: center;
+    animation: glowEffect 3s infinite linear;
+}
+
+@keyframes glowEffect {
+    0% {
+        background-position: 100% 0;
+    }
+    100% {
+        background-position: -100% 0;
+    }
 }
