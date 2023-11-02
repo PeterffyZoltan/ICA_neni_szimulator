@@ -2,6 +2,11 @@ window.addEventListener('load', () => {
     startButtonGlow();
     createCircularBackground();
     dancingICA();
+    foodcarriersCircling();
+});
+
+window.addEventListener('resize', () => {
+    createCircularBackground();
 });
 
 function startButtonGlow() {
@@ -10,23 +15,50 @@ function startButtonGlow() {
 }
 
 function createCircularBackground() {
-    const background = document.getElementById("background");
+    const background = document.getElementById("container");
     const foodCircles = document.querySelectorAll(".food-circle");
 
-    const centerX = background.clientWidth / 2;
-    const centerY = background.clientHeight / 2;
-    const radius = background.clientWidth / 4;
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+
+    const radius = centerX / 2;
+
     const numCircles = foodCircles.length;
 
     foodCircles.forEach((circle, index) => {
         const angle = (index / numCircles) * 2 * Math.PI;
-        const x = radius * Math.cos(angle);
-        const y = radius * Math.sin(angle);
+        const x = centerX + radius * Math.cos(angle);
+        const y = centerY + radius * Math.sin(angle);
 
         circle.style.display = "block";
-        circle.style.transform = `translate(${centerX + x}px, ${centerY + y}px)`;
+        circle.style.transform = `translate(${x}px, ${y}px)`;
     });
 }
+
+function foodcarriersCircling() {
+    const foodCircles = document.querySelectorAll(".food-circle");
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    const radius = centerX / 2;
+    const numCircles = foodCircles.length;
+
+    let angle = 0;
+    const angleIncrement = (2 * Math.PI) / numCircles;
+
+    function moveFoodCarriers() {
+        foodCircles.forEach((circle, index) => {
+            const x = centerX + radius * Math.cos(angle + index * angleIncrement);
+            const y = centerY + radius * Math.sin(angle + index * angleIncrement);
+
+            circle.style.transform = `translate(${x}px, ${y}px)`;
+        });
+
+        angle -= 0.02; 
+    }
+
+    setInterval(moveFoodCarriers, 50);
+}
+
 
 function dancingICA() {    
     const img = document.getElementById("ICAimg");
