@@ -31,7 +31,7 @@ function createCircularBackground() {
         const y = centerY + radius * Math.sin(angle);
 
         circle.style.display = "block";
-        circle.style.transform = `translate(${x}px, ${y}px)`;
+        circle.style.transform = `translate(${x}px, ${y}px)`; 
     });
 }
 
