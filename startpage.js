@@ -1,3 +1,5 @@
+import {GameHandler} from "./GameHandler.js";
+
 window.addEventListener('load', () => {
     startButtonGlow();
     createCircularBackground();
@@ -15,11 +17,11 @@ function startButtonGlow() {
 }
 
 function createCircularBackground() {
-    const background = document.getElementById("container");
+    const container = document.getElementById("container");
     const foodCircles = document.querySelectorAll(".food-circle");
 
-    const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
+    const centerX = container.offsetWidth / 2;
+    const centerY = container.offsetHeight / 2;
 
     const radius = centerX / 2;
 
@@ -31,7 +33,7 @@ function createCircularBackground() {
         const y = centerY + radius * Math.sin(angle);
 
         circle.style.display = "block";
-        circle.style.transform = `translate(${x}px, ${y}px)`; 
+        circle.style.transform = `translate(${x}px, ${y}px)`;
     });
 }
 
@@ -78,3 +80,8 @@ function dancingICA() {
     }
     const interval = setInterval(changeImageSource, 500);
 }
+
+// function startGame() {
+//     const gameHandler = new GameHandler(ctx, width, height);
+//     gameHandler.startGameLoop();
+// }
