@@ -12,7 +12,7 @@ export class Ica extends Character{
 
         };
         super(ctx, x, y, width, height, spriteSrc, spriteAnimationFrames, speed);
-        this.range = 40;
+        this.range = 50;
         this.healthbar = new HealthBar(this.ctx, 100, 100, this.hitbox.x- 50 + this.hitbox.width/2, this.hitbox.y+this.hitbox.height+10);
         this.gameHandler = gameHandler;
         this.CurrentState = {...this.spriteAnimationFrames.run , speedX: 0, speedY: 0, sY : 0 ,running: false, hitting: false};
@@ -191,13 +191,13 @@ export class Ica extends Character{
 
         switch(direction){
             case 0: //up
-                return {x: hitbox.x, y: hitbox.y-this.range, endX: hitbox.x+hitbox.width, endY: hitbox.y};
+                return {x: hitbox.x-20, y: hitbox.y-this.range, endX: hitbox.x+hitbox.width+20, endY: hitbox.y};
             case 1: //left
-                return {x: hitbox.x-this.range, y: hitbox.y, endX: hitbox.x, endY: hitbox.y+hitbox.height};
+                return {x: hitbox.x-this.range, y: hitbox.y+20, endX: hitbox.x, endY: hitbox.y+hitbox.height-10};
             case 2: //down
-                return {x: hitbox.x, y: hitbox.y+hitbox.height, endX: hitbox.x+hitbox.width, endY: hitbox.y+hitbox.height+this.range};
+                return {x: hitbox.x-20, y: hitbox.y+hitbox.height, endX: hitbox.x+hitbox.width+20, endY: hitbox.y+hitbox.height+this.range};
             case 3: //right
-                return {x: hitbox.x+hitbox.width, y: hitbox.y, endX: hitbox.x+hitbox.width+this.range, endY: hitbox.y+hitbox.height};
+                return {x: hitbox.x+hitbox.width, y: hitbox.y+20, endX: hitbox.x+hitbox.width+this.range, endY: hitbox.y+hitbox.height-10};
 
 
         }   
