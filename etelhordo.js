@@ -14,7 +14,7 @@ export class Etelhordo{
         this.clang = new Audio('./assets/metalclang.mp3');
         this.hitBoxStartX = this.x+this.sizeX/5;
         this.hitBoxEndX = this.x+this.sizeX/1.33;
-        this.hitboxStartY = this.y+this.sizeY/20;
+        this.hitboxStartY = this.y+this.sizeY/6;
         this.hitboxEndY=this.y+sizeY/1.15;
         
     }
