@@ -13,7 +13,7 @@ export class Ica extends Character{
         };
         super(ctx, x, y, width, height, spriteSrc, spriteAnimationFrames, speed);
         this.range = 40;
-        this.healthbar = new HealthBar(this.ctx, 100, 100, this.hitbox.x-this.hitbox.width/4, this.hitbox.y+this.hitbox.height+10);
+        this.healthbar = new HealthBar(this.ctx, 100, 100, this.hitbox.x- 50 + this.hitbox.width/2, this.hitbox.y+this.hitbox.height+10);
         this.gameHandler = gameHandler;
         this.CurrentState = {...this.spriteAnimationFrames.run , speedX: 0, speedY: 0, sY : 0 ,running: false, hitting: false};
         this.inputHandler = new InputHandler(['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', ' ']);
@@ -54,8 +54,8 @@ export class Ica extends Character{
         this.x += this.CurrentState.speedX;
         this.y += this.CurrentState.speedY;
         const hitbox = this.hitbox;
-        this.healthbar.x = hitbox.x-hitbox.width/4;
-        this.healthbar.y = hitbox.y + hitbox.height + 10;
+        this.healthbar.x = hitbox.x- this.healthbar.maxHealth/2+ hitbox.width/2;
+        this.healthbar.y = hitbox.y + hitbox.height + 5;
 
     }
 

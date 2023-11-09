@@ -24,16 +24,14 @@ export class GameHandler{
     }
     startGameLoop(){
         this.ctx.clearRect(0, 0, this.width, this.height);
-        this.Ica.update();
-        this.Ica.draw();
         for (const etelhordo of this.etelhordok) {
             etelhordo.draw();
             etelhordo.update();
             etelhordo.drawHitbox();
         }
-        this.etelhordok[0].draw();
-        this.etelhordok[0].update();
-
+        
+        this.Ica.update();
+        this.Ica.draw();
         requestAnimationFrame(this.startGameLoop);
         
     }
