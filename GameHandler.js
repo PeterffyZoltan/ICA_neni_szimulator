@@ -10,8 +10,12 @@ export class GameHandler{
         this.startGameLoop = this.startGameLoop.bind(this);
         this.GameStarted = false;
         this.etelhordok= [];
-        for (let num = 0; num < 5; num++) {
-            this.etelhordok.push(new Etelhordo(this.ctx,Math.random()*1500,Math.random()*900,100));
+        while (this.etelhordok.length<5) {
+            let x = Math.random()*1500;
+            let y = Math.random()*900;
+            if(x>this.Ica.width+this.Ica.x&&y>this.Ica.height+this.Ica.y){
+                this.etelhordok.push(new Etelhordo(this.ctx,x,y,100));
+            }
             
         }
     
