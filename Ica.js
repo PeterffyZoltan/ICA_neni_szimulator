@@ -12,7 +12,7 @@ export class Ica extends Character{
 
         };
         super(ctx, x, y, width, height, spriteSrc, spriteAnimationFrames, speed);
-        this.range = 100;
+        this.range = 40;
         this.healthbar = new HealthBar(this.ctx, 100, 100, this.hitbox.x-this.hitbox.width/4, this.hitbox.y+this.hitbox.height+10);
         this.gameHandler = gameHandler;
         this.CurrentState = {...this.spriteAnimationFrames.run , speedX: 0, speedY: 0, sY : 0 ,running: false, hitting: false};
@@ -22,6 +22,7 @@ export class Ica extends Character{
         this.drawHitbox();
         this.healthbar.draw();
         this.healthbar.update();
+        this.drawHitRange();
         super.draw();
     } 
 
@@ -168,29 +169,48 @@ export class Ica extends Character{
     
     checkHit(){
         //get the range of the hit if there is a character in that range, hit it
-        console.log('hit');
-        let hitRange = this.hitRange;
-        // this.gameHandler.etelhordok.forEach(enemy => {
-        //     if (
-        //         hitRange.x < enemy.x + enemy.width &&
-        //         hitRange.x + hitRange.width > enemy.x &&
-        //         hitRange.y < enemy.y + enemy.height &&
-        //         hitRange.y + hitRange.height > enemy.y
+        const hitRange = this.hitRange;
+        this.gameHandler.etelhordok.forEach(etelhordo => {
+            const etelhordoHitbox = {x: etelhordo.hitBoxStartX, y: etelhordo.hitboxStartY, endX: etelhordo.hitBoxEndX, endY: etelhordo.hitboxEndY};
+            // console.log(etelhordoHitbox, hitRange);
+            if(etelhordoHitbox.x <= hitRange.endX 
+                && etelhordoHitbox.endX >= hitRange.x 
+                && etelhordoHitbox.endY >= hitRange.y 
+                && etelhordoHitbox.y <= hitRange.endY){
+                etelhordo.getHit();
+            }
+            
+        });
 
-        //     )
-        //     {
-                
-        //         enemy.hit();
-        //     }
-        // });
+        
     }
 
     get hitRange(){
         const direction = this.CurrentState.sY%4;
-        console.log(direction);
+        const hitbox = this.hitbox;
+
+        switch(direction){
+            case 0: //up
+                return {x: hitbox.x, y: hitbox.y-this.range, endX: hitbox.x+hitbox.width, endY: hitbox.y};
+            case 1: //left
+                return {x: hitbox.x-this.range, y: hitbox.y, endX: hitbox.x, endY: hitbox.y+hitbox.height};
+            case 2: //down
+                return {x: hitbox.x, y: hitbox.y+hitbox.height, endX: hitbox.x+hitbox.width, endY: hitbox.y+hitbox.height+this.range};
+            case 3: //right
+                return {x: hitbox.x+hitbox.width, y: hitbox.y, endX: hitbox.x+hitbox.width+this.range, endY: hitbox.y+hitbox.height};
+
+
+        }   
+        
 
         
         
+    }
+
+    drawHitRange(){
+        const hitRange = this.hitRange;
+        this.ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+        this.ctx.fillRect(hitRange.x, hitRange.y, hitRange.endX-hitRange.x, hitRange.endY-hitRange.y);
     }
 
 
