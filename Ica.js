@@ -70,6 +70,10 @@ export class Ica extends Character{
 
         
         const hitbox = {x: this.hitbox.x, y: this.hitbox.y, endX: this.hitbox.x+this.hitbox.width, endY: this.hitbox.y+this.hitbox.height};
+        hitbox.x += this.CurrentState.speedX;
+        hitbox.y += this.CurrentState.speedY;
+        hitbox.endX += this.CurrentState.speedX;
+        hitbox.endY += this.CurrentState.speedY;
         this.gameHandler.etelhordok.forEach(etelhordo => {
             
             const etelhordoHitbox = {x: etelhordo.hitBoxStartX, y: etelhordo.hitboxStartY, endX: etelhordo.hitBoxEndX, endY: etelhordo.hitboxEndY};
@@ -79,10 +83,6 @@ export class Ica extends Character{
                 && etelhordoHitbox.y <= hitbox.endY){
                //cant go through etelhordo
                 console.log('colision')
-                hitbox.x += this.CurrentState.speedX;
-                hitbox.y += this.CurrentState.speedY;
-                hitbox.endX += this.CurrentState.speedX;
-                hitbox.endY += this.CurrentState.speedY;
                 if(this.CurrentState.speedX >= 0 && hitbox.x <= etelhordoHitbox.x){
                     this.CurrentState.speedX = 0;
                 }
