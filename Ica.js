@@ -199,7 +199,7 @@ export class Ica extends Character{
         this.ctx.fillRect(this.hitbox.x, this.hitbox.y, this.hitbox.width, this.hitbox.height);
     }
     get hitbox(){
-        return {x: this.x+30, y: this.y+30, width: this.width-60, height: this.height-30};
+        return {x: this.x+40, y: this.y+35, width: this.width-80, height: this.height-40};
     }
 
 }
