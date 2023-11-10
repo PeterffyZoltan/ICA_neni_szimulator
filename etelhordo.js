@@ -3,6 +3,7 @@ export class Etelhordo{
     constructor(ctx,x,y,health,sizeX=100,sizeY=100,healthBar){
         this.ctx = ctx;
         this.imagePath = "assets/foodcarrier.png";
+        this.demolotionPath = "/assets/boom/boom1.png";
         this.x = x;
         this.y = y;
         this.health = health;
@@ -15,20 +16,23 @@ export class Etelhordo{
         this.hitBoxStartX = this.x+this.sizeX/5;
         this.hitBoxEndX = this.x+this.sizeX/1.33;
         this.hitboxStartY = this.y+this.sizeY/6;
-        this.hitboxEndY=this.y+sizeY/1.15;
+        this.hitboxEndY=this.y+sizeY/1.15; 
         
     }
     
     draw(){
         this.ctx.drawImage(this.img, this.x, this.y, this.sizeX,this.sizeY);
         this.healthbar.draw();
-    }
-    update(){
         this.healthbar.update();
     }
     getHit(){
         this.clang.play();
         console.log("Ica successfully szétbaszta az ételhordót")
+        let damage = 10;
+        if (this.healthbar.health>=damage) {
+            this.healthbar.health-=damage;
+            this.healthbar.update();
+        }
 
     }
     drawHitbox(){
