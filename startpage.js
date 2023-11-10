@@ -1,5 +1,3 @@
-import {GameHandler} from "./GameHandler.js";
-
 window.addEventListener('load', () => {
     startButtonGlow();
     createCircularBackground();
@@ -9,7 +7,11 @@ window.addEventListener('load', () => {
 
 window.addEventListener('resize', () => {
     createCircularBackground();
+    clearInterval(interval);
+    foodcarriersCircling();
 });
+
+const startButton = document.getElementById("startButton").addEventListener("click", startGame);
 
 function startButtonGlow() {
     const startButton = document.getElementById("startButton");
@@ -20,8 +22,8 @@ function createCircularBackground() {
     const container = document.getElementById("container");
     const foodCircles = document.querySelectorAll(".food-circle");
 
-    const centerX = container.offsetWidth / 2;
-    const centerY = container.offsetHeight / 2;
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
 
     const radius = centerX / 2;
 
@@ -39,8 +41,8 @@ function createCircularBackground() {
 
 function foodcarriersCircling() {
     const foodCircles = document.querySelectorAll(".food-circle");
-    const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
+    const centerX = window.innerWidth / 2 - 45;
+    const centerY = window.innerHeight / 2 - 45;
     const radius = centerX / 2;
     const numCircles = foodCircles.length;
 
@@ -58,7 +60,7 @@ function foodcarriersCircling() {
         angle -= 0.02; 
     }
 
-    setInterval(moveFoodCarriers, 50);
+    const interval = setInterval(moveFoodCarriers, 50);
 }
 
 
@@ -81,7 +83,6 @@ function dancingICA() {
     const interval = setInterval(changeImageSource, 500);
 }
 
-// function startGame() {
-//     const gameHandler = new GameHandler(ctx, width, height);
-//     gameHandler.startGameLoop();
-// }
+function startGame() {
+    window.open("./index.html", "_self");
+}
