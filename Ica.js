@@ -1,6 +1,7 @@
 import {Character} from './Character.js';
 import {InputHandler} from './inputHandler.js';
 import {HealthBar} from './healthbar.js';
+import {Kanal} from './kanal.js';
 export class Ica extends Character{
     constructor(ctx, x, y, width, height, gameHandler){
         const spriteSrc = './assets/Ica_sprite.png';
@@ -16,7 +17,9 @@ export class Ica extends Character{
         this.healthbar = new HealthBar(this.ctx, 100, 100, this.hitbox.x- 50 + this.hitbox.width/2, this.hitbox.y+this.hitbox.height+10);
         this.gameHandler = gameHandler;
         this.CurrentState = {...this.spriteAnimationFrames.run , speedX: 0, speedY: 0, sY : 0 ,running: false, hitting: false};
-        this.inputHandler = new InputHandler(['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', ' ']);
+        this.inputHandler = new InputHandler(['w', 'a', 's', 'd', ' ']);
+        this.Kanal = new Kanal(this.ctx,  60, 60, 0, 0, this, gameHandler);
+        
     }
     draw(){
         this.drawHitbox();
@@ -24,6 +27,7 @@ export class Ica extends Character{
         this.healthbar.update();
         this.drawHitRange();
         super.draw();
+        this.Kanal.draw();
     } 
 
     gotHit(){
@@ -40,6 +44,7 @@ export class Ica extends Character{
     update(){
         
         this.handleInput();
+        this.Kanal.update();
         if(!this.CurrentState?.running)
         {
             if(!this.CurrentState?.hitting) return;
@@ -56,8 +61,11 @@ export class Ica extends Character{
         const hitbox = this.hitbox;
         this.healthbar.x = hitbox.x- this.healthbar.maxHealth/2+ hitbox.width/2;
         this.healthbar.y = hitbox.y + hitbox.height + 5;
+        this.Kanal.basePositionX = hitbox.x- 50 + hitbox.width/2;
+        this.Kanal.basePositionY = hitbox.y- 50 + hitbox.height/2;
 
     }
+
 
     checkCollision(){
         if(this.hitbox.x < 0 && this.CurrentState.speedX < 0 || this.hitbox.x + this.hitbox.width > this.ctx.canvas.width && this.CurrentState.speedX > 0)
@@ -83,7 +91,6 @@ export class Ica extends Character{
                 && etelhordoHitbox.endY >= hitbox.y 
                 && etelhordoHitbox.y <= hitbox.endY){
                //cant go through etelhordo
-                console.log('colision')
                 if(this.CurrentState.speedX >= 0 && hitbox.x <= etelhordoHitbox.x){
                     this.CurrentState.speedX = 0;
                 }
@@ -124,22 +131,22 @@ export class Ica extends Character{
         }
         else if(this.inputHandler.pressedKeys.length > 0){
             this.CurrentState.running = true;
-            if(this.inputHandler.isPressed('ArrowRight')){
+            if(this.inputHandler.isPressed('d')){
                 this.CurrentState.speedX = this.speed;
                 this.CurrentState.sY = this.spriteAnimationFrames.run.sY+3;
             }
-            else if(this.inputHandler.isPressed('ArrowLeft')){
+            else if(this.inputHandler.isPressed('a')){
                 this.CurrentState.speedX = -this.speed;
                 this.CurrentState.sY = this.spriteAnimationFrames.run.sY+1;
             }
             else{
                 this.CurrentState.speedX = 0;
             }
-            if(this.inputHandler.isPressed('ArrowUp')){
+            if(this.inputHandler.isPressed('w')){
                 this.CurrentState.speedY = -this.speed;
                 this.CurrentState.sY = this.spriteAnimationFrames.run.sY;
             }
-            else if(this.inputHandler.isPressed('ArrowDown')){
+            else if(this.inputHandler.isPressed('s')){
                 this.CurrentState.speedY = this.speed;
                 this.CurrentState.sY = this.spriteAnimationFrames.run.sY+2;
             }
