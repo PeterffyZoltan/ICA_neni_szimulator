@@ -29,15 +29,25 @@ export class GameHandler{
     }
     startGameLoop(){
         this.ctx.clearRect(0, 0, this.width, this.height);
+        this.Ica.update();
+        this.drawHitboxes();
         for (const etelhordo of this.etelhordok) {
             etelhordo.draw();
-            etelhordo.drawHitbox();
+            
         }
         
-        this.Ica.update();
         this.Ica.draw();
         requestAnimationFrame(this.startGameLoop);
         
+    }
+    drawHitboxes(){
+        this.Ica.drawHitbox();
+        this.Ica.Kanal.drawHitbox();
+        this.Ica.drawHitRange();
+        for (const etelhordo of this.etelhordok) {
+            etelhordo.drawHitbox();
+            
+        }
     }
 
     
