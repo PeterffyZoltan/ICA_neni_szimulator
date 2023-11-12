@@ -93,7 +93,7 @@ export class Kanal {
             this.centerX = this.destinationX;
             this.centerY = this.destinationY;
             this.Isidle = true;
-            this.speed = 30;
+            this.speed = 40;
             this.hittedEnemys = [];
             return;
         }
@@ -151,7 +151,7 @@ export class Kanal {
         this.destinationY = y;
         this.Isidle = false;
         this.speed = 15;
-        this.rotateSpeed = 30;
+        this.rotateSpeed = 20;
         this.IsAttacking = true;
     }
     
