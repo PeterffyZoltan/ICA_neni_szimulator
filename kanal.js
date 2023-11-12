@@ -11,7 +11,7 @@ export class Kanal {
         this.centerY = 0;
         this.basePositionX = x;
         this.basePositionY = y;
-        this.rotateSpeed = 2;
+        this.rotateSpeed = 1;
         this.offsetX = 0;
         this.offsetY = 0;
         this.ica = ica;
@@ -71,7 +71,7 @@ export class Kanal {
                 
             }
             else{
-                this.rotateSpeed = 2;
+                this.rotateSpeed = 1;
                 this.speed = 10;   
                 this.IsAttacking = false; 
                 this.hittedEnemys = [];
