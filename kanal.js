@@ -1,6 +1,6 @@
 export class Kanal {
     constructor(ctx, width, height, x, y, ica, gameHandler) {
-      
+        
         this.context = ctx;
         this.image = new Image();
         this.image.src = "assets/kanal.png";
@@ -24,7 +24,12 @@ export class Kanal {
         this.speed = 10;
         this.destinationX = 0;
         this.destinationY = 0;
-
+        this.IsAttacking = false;
+        document.addEventListener('click', (event) => {
+            console.log('hehehe');
+            this.handleClicked(event);
+        });
+        this.hittedEnemys = [];
 
   
         
@@ -36,7 +41,7 @@ export class Kanal {
         this.context.rotate((this.angle * Math.PI) / 180);
         this.context.drawImage(this.image, -this.width / 2, -this.height / 2, this.width, this.height);
         this.context.restore();
-        this.drawHitbox();
+        // this.drawHitbox();
         
     }
     
@@ -44,21 +49,32 @@ export class Kanal {
     
     update(){
         this.angle += this.rotateSpeed;
-        console.log(this.centerX, this.centerY);  
-        if(this.hitCooldownCounter > 0) this.hitCooldownCounter--; 
-        else{
+        if(this.hitCooldownCounter <= 0){
             this.checkCollision();
+        }
+        else if (this.IsAttacking){
+            this.checkCollision();
+        }
+        else{
+            this.hitCooldownCounter--;
         }
         if(this.Isidle){
             const xDistance = this.basePositionX - this.centerX;
             const yDistance = this.basePositionY - this.centerY;
+            const distance = Math.sqrt(xDistance * xDistance + yDistance * yDistance);
+            const xSpeed = xDistance / distance * this.speed;
+            const ySpeed = yDistance / distance * this.speed;
             
-            if(xDistance != 0 || yDistance != 0){
-                const distance = Math.sqrt(xDistance * xDistance + yDistance * yDistance);
-                const xSpeed = xDistance / distance * this.speed;
-                const ySpeed = yDistance / distance * this.speed;
+            if(Math.abs(xDistance) > Math.abs(xSpeed) || Math.abs(yDistance) > Math.abs(ySpeed)){
                 this.centerX += xSpeed;
                 this.centerY += ySpeed;
+                
+            }
+            else{
+                this.rotateSpeed = 2;
+                this.speed = 10;   
+                this.IsAttacking = false; 
+                this.hittedEnemys = [];
             }
             
             
@@ -77,7 +93,8 @@ export class Kanal {
             this.centerX = this.destinationX;
             this.centerY = this.destinationY;
             this.Isidle = true;
-            this.speed = 0;
+            this.speed = 30;
+            this.hittedEnemys = [];
             return;
         }
         this.centerX += xSpeed;
@@ -92,8 +109,15 @@ export class Kanal {
                 && etelhordoHitbox.endX >= hitRange.x 
                 && etelhordoHitbox.endY >= hitRange.y 
                 && etelhordoHitbox.y <= hitRange.endY){
-                etelhordo.getHit();
-                this.hitCooldownCounter = this.hitCooldown;
+                    if(this.IsAttacking){
+                        if(this.hittedEnemys.includes(etelhordo)) return;
+                        this.hittedEnemys.push(etelhordo);
+                        etelhordo.getHit();
+                    }
+                    else{
+                        etelhordo.getHit();
+                        this.hitCooldownCounter = this.hitCooldown;
+                        }
             }
             
         });
@@ -118,5 +142,18 @@ export class Kanal {
         this.context.stroke();
         this.context.restore();
     }
+    handleClicked(event){
+        if(this.IsAttacking) return;
+        console.log(event);
+        const x = event.offsetX;
+        const y = event.offsetY;
+        this.destinationX = x;
+        this.destinationY = y;
+        this.Isidle = false;
+        this.speed = 15;
+        this.rotateSpeed = 30;
+        this.IsAttacking = true;
+    }
+    
   }
   

@@ -17,15 +17,15 @@ export class Ica extends Character{
         this.healthbar = new HealthBar(this.ctx, 100, 100, this.hitbox.x- 50 + this.hitbox.width/2, this.hitbox.y+this.hitbox.height+10);
         this.gameHandler = gameHandler;
         this.CurrentState = {...this.spriteAnimationFrames.run , speedX: 0, speedY: 0, sY : 0 ,running: false, hitting: false};
-        this.inputHandler = new InputHandler(['w', 'a', 's', 'd', ' ']);
         this.Kanal = new Kanal(this.ctx,  60, 60, 0, 0, this, gameHandler);
+        this.inputHandler = new InputHandler(['w', 'a', 's', 'd', ' ']);
         
     }
     draw(){
-        this.drawHitbox();
+        
         this.healthbar.draw();
         this.healthbar.update();
-        this.drawHitRange();
+        
         super.draw();
         this.Kanal.draw();
     } 
