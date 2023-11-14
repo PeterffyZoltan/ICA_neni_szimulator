@@ -228,5 +228,12 @@ export class Ica extends Character{
     get hitbox(){
         return {x: this.x+50, y: this.y+35, width: this.width-100, height: this.height-40};
     }
+    gotHit(){
+        this.healthbar.health -= 10;
+        if(this.healthbar.health <= 0){
+            this.gameHandler.gameOver();
+            this.healthbar.health = 0;
+        }
+    }
 
 }
