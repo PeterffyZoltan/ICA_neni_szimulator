@@ -16,10 +16,10 @@ export class Projectile{
     }
     get hitbox(){
         return {
-            x: this.centerX - this.width/2,
-            y: this.centerY - this.height/2,
-            width: this.width,
-            height: this.height,
+            x: this.centerX - this.width/2+15,
+            y: this.centerY - this.height/2+15,
+            width: this.width-30,
+            height: this.height-30,
         }
     }
     draw() {
@@ -51,11 +51,8 @@ export class Projectile{
         return false;
     }
     drawHitbox(){
-        this.ctx.save();
-        this.ctx.translate(this.centerX, this.centerY);
-        
-        this.ctx.strokeRect(-this.width / 2, -this.height / 2, this.width, this.height);
-        this.ctx.restore();
+        this.ctx.strokeStyle = "red";
+        this.ctx.strokeRect(this.hitbox.x, this.hitbox.y, this.hitbox.width, this.hitbox.height);
     }
     checkCollision(other){
         const hitbox = {x : this.centerX - this.width/2, y: this.centerY - this.height/2, endX: this.centerX + this.width/2, endY: this.centerY + this.height/2};
