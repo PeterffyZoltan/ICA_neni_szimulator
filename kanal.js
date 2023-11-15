@@ -11,7 +11,6 @@ export class Kanal {
         this.centerY = 0;
         this.basePositionX = x;
         this.basePositionY = y;
-        this.rotateSpeed = 1;
         this.offsetX = 0;
         this.offsetY = 0;
         this.ica = ica;
@@ -21,7 +20,7 @@ export class Kanal {
         this.gameHandler = gameHandler;
         this.hitCooldown = 30;
         this.hitCooldownCounter = 0;
-        this.speed = 10;
+        this.baseSpeed = 10;
         this.destinationX = 0;
         this.destinationY = 0;
         this.IsAttacking = false;
@@ -30,8 +29,9 @@ export class Kanal {
             this.handleClicked(event);
         });
         this.hittedEnemys = [];
-
-  
+        this.baseRotateSpeed = 1;
+        
+        
         
     }
     
@@ -44,8 +44,12 @@ export class Kanal {
         // this.drawHitbox();
         
     }
-    
-    
+    get rotateSpeed(){
+        return this.baseRotateSpeed*this.gameHandler.deltaTime*100;
+    }
+    set rotateSpeed(val){
+        this.baseRotateSpeed = val;
+    }
     
     update(){
         this.angle += this.rotateSpeed;
@@ -56,7 +60,7 @@ export class Kanal {
             this.checkCollision();
         }
         else{
-            this.hitCooldownCounter--;
+            this.hitCooldownCounter = this.hitCooldownCounter - 80*this.gameHandler.deltaTime;
         }
         if(this.Isidle){
             const xDistance = this.basePositionX - this.centerX;
@@ -82,6 +86,12 @@ export class Kanal {
         else{
             this.moveToDestination();
         }
+    }
+    get speed(){
+        return this.baseSpeed*this.gameHandler.deltaTime*80;
+    }
+    set speed(val){
+        this.baseSpeed = val;
     }
     moveToDestination(){
         const xDistance = this.destinationX - this.centerX;

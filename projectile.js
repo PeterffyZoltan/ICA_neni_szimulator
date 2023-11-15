@@ -4,7 +4,7 @@ export class Projectile{
         this.gameHandler = gameHandler;
         this.direction = direction;
         this.imageSource = imageSource;
-        this.rotation = rotation;
+        this.rotation = rotation*100;
         this.width = width;
         this.height = height;
         this.image = new Image();
@@ -32,13 +32,23 @@ export class Projectile{
         
     }
     update(){
-        this.centerX += this.direction.x;
-        this.centerY += this.direction.y;
-        this.angle += this.rotation;
+        this.centerX += this.direction.x*this.gameHandler.deltaTime;
+        this.centerY += this.direction.y*this.gameHandler.deltaTime;
+        this.angle += this.rotation*this.gameHandler.deltaTime;
+        if(this.isOutOfScreen){
+            this.gameHandler.projectiles.splice(this.gameHandler.projectiles.indexOf(this), 1);
+        }
         if(this.checkCollision(this.gameHandler.Ica)){
             this.gameHandler.Ica.gotHit();
             this.gameHandler.projectiles.splice(this.gameHandler.projectiles.indexOf(this), 1);
         }
+
+    }
+    get isOutOfScreen(){
+        if(this.centerX < 0 || this.centerX > this.ctx.canvas.width || this.centerY < 0 || this.centerY > this.ctx.canvas.height){
+            return true;
+        }
+        return false;
     }
     drawHitbox(){
         this.ctx.save();

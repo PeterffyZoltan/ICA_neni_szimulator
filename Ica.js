@@ -5,7 +5,7 @@ import {Kanal} from './kanal.js';
 export class Ica extends Character{
     constructor(ctx, x, y, width, height, gameHandler){
         const spriteSrc = './assets/Ica_sprite.png';
-        const speed = 10;
+        const speed = 800;
         const spriteAnimationFrames = {
             run: {sXMax:8, sY:8, stagger:3},
             hit: {sXMax:6, sY:12, stagger:3}
@@ -19,7 +19,7 @@ export class Ica extends Character{
         this.CurrentState = {...this.spriteAnimationFrames.run , speedX: 0, speedY: 0, sY : 0 ,running: false, hitting: false};
         this.Kanal = new Kanal(this.ctx,  60, 60, 0, 0, this, gameHandler);
         this.inputHandler = new InputHandler(['w', 'a', 's', 'd', ' ']);
-        
+        this.staggerSpeed = 80;
     }
     draw(){
         
@@ -161,8 +161,8 @@ export class Ica extends Character{
         }
     }
     updateSprite(){
-        this.staggerCounter++;
-        if(this.staggerCounter == this.CurrentState.stagger){
+        this.staggerCounter+= this.gameHandler.deltaTime*this.staggerSpeed;
+        if(this.staggerCounter >= this.CurrentState.stagger){
             this.staggerCounter = 0;
             this.CurrentAnimationFrameX++;
             if(this.CurrentAnimationFrameX >= this.CurrentState.sXMax){
