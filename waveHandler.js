@@ -1,6 +1,7 @@
 import {Etelhordo} from "./etelhordo.js";
 import { Projectile } from "./projectile.js";
 
+
 export class WaveHandler {
     constructor(gameHandler)
     {
@@ -8,6 +9,9 @@ export class WaveHandler {
         this.nextWave = this.firstWave;
         this.projectileFrequency;
         this.updateCurrentWave = null;
+        fetch('./projectiles.json').then(response => response.json()).then(data => {
+            this.projectileTypes = data;
+        });
         
         
     }
@@ -48,14 +52,18 @@ export class WaveHandler {
             y: normalizedDirection.y * speed
         };
         let rotation = Math.random()*5;
-        let projectile = new Projectile(this.gameHandler, "./assets/foodcarrier.png", x, y, 50, 50, finalDirection, rotation);
+        
+        const proj = this.projectileTypes[Math.floor(Math.random()*this.projectileTypes.length)];
+        console.log(proj.src)
+        const size = proj?.size || {x: 50, y: 50};
+        let projectile = new Projectile(this.gameHandler, proj.src, x, y, size.x, size.y, finalDirection, rotation);
         this.gameHandler.projectiles.push(projectile);
     }
     createEtelhordo(num){
         while (this.gameHandler.etelhordok.length<num) {
             let x = Math.random()*1500;
             let y = Math.random()*900;
-            let etelhordo = new Etelhordo(this.gameHandler.ctx,x,y,100);
+            let etelhordo = new Etelhordo(this.gameHandler,x,y,100);
             if(x>this.gameHandler.Ica.width+this.gameHandler.Ica.x
                 &&y>this.gameHandler.Ica.height+this.gameHandler.Ica.y
                 &&etelhordo.sizeX+x<this.gameHandler.width
@@ -66,20 +74,10 @@ export class WaveHandler {
             
         }
     }
-    firstWave(){
-        this.projectileFrequency = 1000;
-        this.gameHandler.etelhordok = [];   
-        this.gameHandler.projectiles = [];
-        this.createEtelhordo(5);
-        this.updateCurrentWave = this.updateFirstWave;
-        this.nextWave = this.firstWave;
-    }
-    
-    updateFirstWave(){
+    createProjectiles(max){
         const icaPosition = {x: this.gameHandler.Ica.x + this.gameHandler.Ica.width/2,
         y: this.gameHandler.Ica.y + this.gameHandler.Ica.height/2 };
-        
-        if(this.gameHandler.projectiles.length < 5){
+        if(this.gameHandler.projectiles.length < max){
             
             let staticPos = Math.floor(Math.random() * 2);
             console.log(staticPos)
@@ -116,9 +114,48 @@ export class WaveHandler {
             }
         }
     }
-    secondWave(){
-        console.log("Win")
-        this.nextWave = null;
-        this.updateCurrentWave = null;
+    firstWave(){
+        this.projectileFrequency = 1000;
+        this.gameHandler.etelhordok = [];   
+        this.gameHandler.projectiles = [];
+        this.createEtelhordo(5);
+        this.updateCurrentWave = this.updateFirstWave;
+        this.nextWave = this.secondWave;
     }
+    
+    updateFirstWave(){
+        this.createProjectiles(5);
+       
+        
+        
+    }
+    
+    secondWave(){
+        this.gameHandler.etelhordok = [];   
+        this.gameHandler.projectiles = [];
+        this.createEtelhordo(8);
+        this.updateCurrentWave = this.updateSecondWave;
+        this.nextWave = null;
+    }
+    updateSecondWave(){
+        this.createProjectiles(8);
+    }
+    
+    // createProjectileWall(x,y,gapSize,projectile){
+    //     let projectileSize = projectile.size;
+    //     if(x = 0){
+    //         let projectileGapStart = Math.floor(Math.random() * (this.gameHandler.height/projectileSize));
+    //         for (let i = 0; i < this.gameHandler.height/projectileSize; i++) {
+    //             if(i < projectileGapStart || i > projectileGapStart+gapSize){
+    //                 let x = i*projectileSize;
+
+    //                 this.createProjectile(x,y,{x: 1, y: 0});
+    //             }
+                
+    //         }
+
+    //     }
+    //     else{
+
+    //     }
 }
