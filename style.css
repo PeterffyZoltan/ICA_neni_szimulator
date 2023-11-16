@@ -97,3 +97,81 @@ h1 {
     object-fit: contain;
     display: block;
 }
+
+.gameoverBody, .winBody {
+    height: 100vh;
+    width: 100vw;
+    background-image: url("assets/196613214-black-sidewalk-square-tile-background-stone-or-ceramic-brick-wall-texture-kitchen-backsplash-mosaic.jpg");
+}
+
+#gameover h1 {
+    margin: 26vh auto 15vh auto;
+    color: red;
+    font-family: sans-serif;
+    text-align: center;
+    font-size: 15vh;
+}
+
+#gameover #restart {
+    display: block;
+    margin: 0 auto;
+    width: 40vh;
+    height: 15vh;
+    color: white;
+    font-family: sans-serif;
+    text-align: center;
+    font-size: 5vh;
+    text-transform: capitalize;
+    font-weight: 600;
+    background: linear-gradient(90deg, rgba(255, 0, 0, 0.6) 0%, rgba(255,0, 0, 0.6) 50%, rgba(255,0, 0, 0.8) 50%, rgba(255,0, 0, 0.8) 100%);
+    background-size: 200% 100%;
+    background-position: 100% 0;
+    justify-content: center;
+    align-items: center;
+    animation: glowEffect 3s infinite linear;
+}
+
+#gameover #restart:hover {
+    cursor: pointer;
+    border: 5px solid black;
+    background: fixed;
+    background-color: darkred;
+    color: white;
+    font-weight: 800;
+}
+
+#win h1 {
+    margin: 26vh auto 15vh auto;
+    color: gold;
+    font-family: sans-serif;
+    text-align: center;
+    font-size: 15vh;
+}
+
+#win #restart {
+    display: block;
+    margin: 0 auto;
+    width: 40vh;
+    height: 15vh;
+    color: white;
+    font-family: sans-serif;
+    text-align: center;
+    font-size: 5vh;
+    text-transform: capitalize;
+    font-weight: 600;
+    background: linear-gradient(90deg, rgba(255, 215, 0, 0.6) 0%, rgba(255, 215, 0, 0.6) 50%, rgba(255, 215, 0, 0.8) 50%, rgba(255, 215, 0, 0.8) 100%);
+    background-size: 200% 100%;
+    background-position: 100% 0;
+    justify-content: center;
+    align-items: center;
+    animation: glowEffect 3s infinite linear;
+}
+
+#win #restart:hover {
+    cursor: pointer;
+    border: 5px solid black;
+    background: fixed;
+    background-color: gold;
+    color: black;
+    font-weight: 800;
+}
