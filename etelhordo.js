@@ -1,7 +1,7 @@
 import { HealthBar } from "./healthbar.js";
 export class Etelhordo{
-    constructor(ctx,x,y,health,sizeX=100,sizeY=100,healthBar){
-        this.ctx = ctx;
+    constructor(Gamehandler,x,y,health,sizeX=100,sizeY=100,healthBar){
+        this.ctx = Gamehandler.ctx;
         this.imagePath = "assets/foodcarrier.png";
         this.demolotionPath = "/assets/boom/boom1.png";
         this.x = x;
@@ -17,7 +17,7 @@ export class Etelhordo{
         this.hitBoxEndX = this.x+this.sizeX/1.33;
         this.hitboxStartY = this.y+this.sizeY/6;
         this.hitboxEndY=this.y+sizeY/1.15; 
-        
+        this.gameHandler = Gamehandler;
     }
     
     draw(){
@@ -29,9 +29,10 @@ export class Etelhordo{
         this.clang.play();
         console.log("Ica successfully szétbaszta az ételhordót")
         let damage = 10;
-        if (this.healthbar.health>=damage) {
-            this.healthbar.health-=damage;
-            this.healthbar.update();
+        this.healthbar.health-=damage;
+        this.healthbar.update();
+        if (this.healthbar.health<=damage) {
+            this.gameHandler.etelhordok.splice(this.gameHandler.etelhordok.indexOf(this), 1);
         }
 
     }
