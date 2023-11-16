@@ -3,13 +3,14 @@ export class Etelhordo{
     constructor(Gamehandler,x,y,health,sizeX=100,sizeY=100,healthBar){
         this.ctx = Gamehandler.ctx;
         this.imagePath = "assets/foodcarrier.png";
-        this.demolotionPath = "/assets/boom/boom1.png";
         this.x = x;
         this.y = y;
         this.health = health;
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.img = new Image();
+        this.spriteImage = new Image();
+        this.spriteImage.src= "/assets/boom/boom1.png";
         this.img.src =this.imagePath;
         this.healthbar= new HealthBar(this.ctx,100,100,this.x,this.y+this.sizeY-10);
         this.clang = new Audio('./assets/metalclang.mp3');
@@ -18,22 +19,44 @@ export class Etelhordo{
         this.hitboxStartY = this.y+this.sizeY/6;
         this.hitboxEndY=this.y+sizeY/1.15; 
         this.gameHandler = Gamehandler;
+        this.spriteWidth =100;
+        this.spriteHeight = 20;
+        this.sX = 0;
+        this.sY=0;        
+        this.destroyed = false;
     }
     
     draw(){
         this.ctx.drawImage(this.img, this.x, this.y, this.sizeX,this.sizeY);
         this.healthbar.draw();
         this.healthbar.update();
+        if (this.healthbar.health<=0) { 
+            if (this.sX!=9 &&this.sY!=7) {          
+                this.gameHandler.ctx.drawImage(this.spriteImage, this.sX * this.spriteWidth, this.sY  * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x, this.y, this.sizeX, this.sizeY);         
+                this.sX++;
+                if (this.sX==9) {
+                    this.sX=0;
+                    this.sY++;
+                }
+                this.destroyed=true;
+            }      
+            
+            else{
+                this.gameHandler.etelhordok.splice(this.gameHandler.etelhordok.indexOf(this), 1);
+                
+            }
+        }
     }
     getHit(){
         this.clang.play();
         console.log("Ica successfully szétbaszta az ételhordót")
         let damage = 10;
-        this.healthbar.health-=damage;
-        this.healthbar.update();
-        if (this.healthbar.health<=damage) {
-            this.gameHandler.etelhordok.splice(this.gameHandler.etelhordok.indexOf(this), 1);
+        if (!this.destroyed) {
+            this.healthbar.health-=damage;
+            this.healthbar.update();
+            
         }
+
 
     }
     drawHitbox(){
@@ -42,5 +65,11 @@ export class Etelhordo{
         this.ctx.strokeStyle = "red";
         this.ctx.stroke();
     }
+    drawAnimation(){
+
+        this.gameHandler.ctx.drawImage(this.spriteImage, this.sX * this.spriteWidth, this.sY  * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x, this.y, this.sizeX, this.sizeY);
+
+    }
+
 
 }
