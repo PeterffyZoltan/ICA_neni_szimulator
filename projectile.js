@@ -16,10 +16,10 @@ export class Projectile{
     }
     get hitbox(){
         return {
-            x: this.centerX - this.width/2+15,
-            y: this.centerY - this.height/2+15,
-            width: this.width-30,
-            height: this.height-30,
+            x: this.centerX - this.width/2+10,
+            y: this.centerY - this.height/2+20,
+            width: this.width-20,
+            height: this.height-40,
         }
     }
     draw() {
