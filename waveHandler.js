@@ -74,20 +74,10 @@ export class WaveHandler {
             
         }
     }
-    firstWave(){
-        this.projectileFrequency = 1000;
-        this.gameHandler.etelhordok = [];   
-        this.gameHandler.projectiles = [];
-        this.createEtelhordo(5);
-        this.updateCurrentWave = this.updateFirstWave;
-        this.nextWave = this.firstWave;
-    }
-    
-    updateFirstWave(){
+    createProjectiles(max){
         const icaPosition = {x: this.gameHandler.Ica.x + this.gameHandler.Ica.width/2,
         y: this.gameHandler.Ica.y + this.gameHandler.Ica.height/2 };
-        
-        if(this.gameHandler.projectiles.length < 5){
+        if(this.gameHandler.projectiles.length < max){
             
             let staticPos = Math.floor(Math.random() * 2);
             console.log(staticPos)
@@ -124,9 +114,48 @@ export class WaveHandler {
             }
         }
     }
-    secondWave(){
-        console.log("Win")
-        this.nextWave = null;
-        this.updateCurrentWave = null;
+    firstWave(){
+        this.projectileFrequency = 1000;
+        this.gameHandler.etelhordok = [];   
+        this.gameHandler.projectiles = [];
+        this.createEtelhordo(5);
+        this.updateCurrentWave = this.updateFirstWave;
+        this.nextWave = this.secondWave;
     }
+    
+    updateFirstWave(){
+        this.createProjectiles(5);
+       
+        
+        
+    }
+    
+    secondWave(){
+        this.gameHandler.etelhordok = [];   
+        this.gameHandler.projectiles = [];
+        this.createEtelhordo(8);
+        this.updateCurrentWave = this.updateSecondWave;
+        this.nextWave = null;
+    }
+    updateSecondWave(){
+        this.createProjectiles(8);
+    }
+    
+    // createProjectileWall(x,y,gapSize,projectile){
+    //     let projectileSize = projectile.size;
+    //     if(x = 0){
+    //         let projectileGapStart = Math.floor(Math.random() * (this.gameHandler.height/projectileSize));
+    //         for (let i = 0; i < this.gameHandler.height/projectileSize; i++) {
+    //             if(i < projectileGapStart || i > projectileGapStart+gapSize){
+    //                 let x = i*projectileSize;
+
+    //                 this.createProjectile(x,y,{x: 1, y: 0});
+    //             }
+                
+    //         }
+
+    //     }
+    //     else{
+
+    //     }
 }
