@@ -63,7 +63,7 @@ export class WaveHandler {
         while (this.gameHandler.etelhordok.length<num) {
             let x = Math.random()*1500;
             let y = Math.random()*900;
-            let etelhordo = new Etelhordo(this.gameHandler.ctx,x,y,100);
+            let etelhordo = new Etelhordo(this.gameHandler,x,y,100);
             if(x>this.gameHandler.Ica.width+this.gameHandler.Ica.x
                 &&y>this.gameHandler.Ica.height+this.gameHandler.Ica.y
                 &&etelhordo.sizeX+x<this.gameHandler.width
