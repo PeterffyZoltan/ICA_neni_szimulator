@@ -105,7 +105,7 @@ h1 {
 }
 
 #gameover h1 {
-    margin: 26vh auto 15vh auto;
+    margin: 12vh auto 5vh auto;
     color: red;
     font-family: sans-serif;
     text-align: center;
@@ -174,4 +174,8 @@ h1 {
     background-color: gold;
     color: black;
     font-weight: 800;
+}
+
+#gameover #ICA {
+    margin: 10vh auto;
 }
