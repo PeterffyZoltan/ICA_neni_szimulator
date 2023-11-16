@@ -1,6 +1,7 @@
 import {Etelhordo} from "./etelhordo.js";
 import { Projectile } from "./projectile.js";
 
+
 export class WaveHandler {
     constructor(gameHandler)
     {
@@ -8,6 +9,9 @@ export class WaveHandler {
         this.nextWave = this.firstWave;
         this.projectileFrequency;
         this.updateCurrentWave = null;
+        fetch('./projectiles.json').then(response => response.json()).then(data => {
+            this.projectileTypes = data;
+        });
         
         
     }
@@ -48,7 +52,11 @@ export class WaveHandler {
             y: normalizedDirection.y * speed
         };
         let rotation = Math.random()*5;
-        let projectile = new Projectile(this.gameHandler, "./assets/foodcarrier.png", x, y, 50, 50, finalDirection, rotation);
+        
+        const proj = this.projectileTypes[Math.floor(Math.random()*this.projectileTypes.length)];
+        console.log(proj.src)
+        const size = proj?.size || {x: 50, y: 50};
+        let projectile = new Projectile(this.gameHandler, proj.src, x, y, size.x, size.y, finalDirection, rotation);
         this.gameHandler.projectiles.push(projectile);
     }
     createEtelhordo(num){
