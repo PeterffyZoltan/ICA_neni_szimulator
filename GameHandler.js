@@ -60,9 +60,7 @@ export class GameHandler{
         }
     }
     gameOver(){
-        this.GameStarted = false;
-        this.ctx.font = "30px Arial";
-        this.ctx.fillText("Game Over", 10, 50);
+        window.open("./gameover.html", "_self");
     }
     gameWin(){
         this.GameStarted = false;
