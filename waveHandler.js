@@ -232,7 +232,6 @@ export class WaveHandler {
     }
     updateThirdWave(){
         if(this.gameHandler.projectiles.length == 0){
-            this.createProjectileWall(0,-1,5,this.projectileTypes[0]);
             this.createProjectileRing(1,this.projectileTypes[0]);
         }
         
@@ -243,7 +242,9 @@ export class WaveHandler {
         this.updateCurrentWave = this.updateThirdWave;
         this.nextWave = null;
         this.gameHandler.projectiles = [];
-        let Vazso = new Boss(this.gameHandler, 1000, 0, 100, 100, {x: 1, y: 0}, 0);
+        let bossX = this.gameHandler.Ica.x>this.gameHandler.width/2? 0: this.gameHandler.width;
+        let bossY = this.gameHandler.Ica.y>this.gameHandler.height? 0: this.gameHandler.height;
+        let Vazso = new Boss(this.gameHandler,bossX,bossY,100,100, {x: 0, y: 0},0);
         this.gameHandler.etelhordok.push(Vazso);
         this.updateCurrentWave = this.updateFourthWave;
 
