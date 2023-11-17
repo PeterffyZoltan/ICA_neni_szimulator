@@ -63,9 +63,7 @@ export class GameHandler{
         window.open("./gameover.html", "_self");
     }
     gameWin(){
-        this.GameStarted = false;
-        this.ctx.font = "30px Arial";
-        this.ctx.fillText("You Win", 10, 50);
+        window.open("./win.html", "_self");
     }
 
     
