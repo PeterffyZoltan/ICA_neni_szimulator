@@ -1,5 +1,6 @@
 import {Etelhordo} from "./etelhordo.js";
 import { Projectile } from "./projectile.js";
+import {Boss} from "./boss.js";
 
 
 export class WaveHandler {
@@ -15,7 +16,9 @@ export class WaveHandler {
                 {"src":"assets/plate.png"},
                 {"src": "assets/slipper_grey.png", "size": {"x":30,"y":50}},
                 {"src": "assets/slipper_red.png", "size": {"x":30,"y":50}},
-                {"src": "assets/slipper_white.png", "size": {"x":30,"y":50}}
+                {"src": "assets/slipper_white.png", "size": {"x":30,"y":50}},
+                
+
                 
             
             
@@ -225,13 +228,32 @@ export class WaveHandler {
         this.gameHandler.etelhordok = [];   
         this.createEtelhordo(3);
         this.updateCurrentWave = this.updateThirdWave;
-        this.nextWave = null;
+        this.nextWave = this.fourthWave;
     }
     updateThirdWave(){
         if(this.gameHandler.projectiles.length == 0){
-            // this.createProjectileWall(0,-1,5,this.projectileTypes[0]);
+            this.createProjectileWall(0,-1,5,this.projectileTypes[0]);
             this.createProjectileRing(1,this.projectileTypes[0]);
         }
+        
+    }
+    fourthWave(){
+        this.gameHandler.etelhordok = [];   
+         this.createEtelhordo(7);
+        this.updateCurrentWave = this.updateThirdWave;
+        this.nextWave = null;
+        this.gameHandler.projectiles = [];
+        let Vazso = new Boss(this.gameHandler, 1000, 0, 100, 100, {x: 1, y: 0}, 0);
+        this.gameHandler.etelhordok.push(Vazso);
+        this.updateCurrentWave = this.updateFourthWave;
+
+    }
+    updateFourthWave(){
+        if(this.gameHandler.etelhordok.length >1){
+            return;
+        }
+        this.createProjectiles(6);
+        
         
     }
     

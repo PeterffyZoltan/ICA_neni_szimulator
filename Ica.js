@@ -30,8 +30,8 @@ export class Ica extends Character{
         this.Kanal.draw();
     } 
 
-    gotHit(){
-        this.healthbar.health -= 10;
+    gotHit(damage = 10){
+        this.healthbar.health -= damage;
         
         console.log(this.healthbar.health);
         // if(this.healthbar.health <= 0){
@@ -184,6 +184,7 @@ export class Ica extends Character{
                 && etelhordoHitbox.endX >= hitRange.x 
                 && etelhordoHitbox.endY >= hitRange.y 
                 && etelhordoHitbox.y <= hitRange.endY){
+                    console.log('hit');
                 etelhordo.getHit();
             }
             
