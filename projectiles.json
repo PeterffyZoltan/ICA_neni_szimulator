@@ -1,9 +1,0 @@
-[
-    {"src":"assets/plate.png"},
-    {"src": "assets/slipper_grey.png", "size": {"x":30,"y":50}},
-    {"src": "assets/slipper_red.png", "size": {"x":30,"y":50}},
-    {"src": "assets/slipper_white.png", "size": {"x":30,"y":50}}
-    
-
-
-]

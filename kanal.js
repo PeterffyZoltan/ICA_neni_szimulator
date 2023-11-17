@@ -25,7 +25,6 @@ export class Kanal {
         this.destinationY = 0;
         this.IsAttacking = false;
         document.addEventListener('click', (event) => {
-            console.log('hehehe');
             this.handleClicked(event);
         });
         this.hittedEnemys = [];
@@ -154,9 +153,15 @@ export class Kanal {
     }
     handleClicked(event){
         if(this.IsAttacking) return;
-        console.log(event);
         const x = event.offsetX;
         const y = event.offsetY;
+        if (x >= this.centerX - this.hitbox.width/2 && 
+            x <= this.centerX +this.hitbox.width/2 && 
+            y >=this.centerY -this.hitbox.height/2 && 
+            y <=this.centerY +this.hitbox.height/2) 
+        {
+            return;
+        }
         this.destinationX = x;
         this.destinationY = y;
         this.Isidle = false;
