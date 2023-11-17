@@ -8,10 +8,19 @@ export class WaveHandler {
         this.gameHandler = gameHandler;
         this.nextWave = this.firstWave;
         this.projectileFrequency;
+        this.projectileTypes;
         this.updateCurrentWave = null;
-        fetch('./projectiles.json').then(response => response.json()).then(data => {
-            this.projectileTypes = data;
-        });
+        
+            this.projectileTypes = [
+                {"src":"assets/plate.png"},
+                {"src": "assets/slipper_grey.png", "size": {"x":30,"y":50}},
+                {"src": "assets/slipper_red.png", "size": {"x":30,"y":50}},
+                {"src": "assets/slipper_white.png", "size": {"x":30,"y":50}}
+                
+            
+            
+            ];
+        
         
         
     }
@@ -25,9 +34,7 @@ export class WaveHandler {
                 this.nextWave();
             }
         }
-        if(!this.updateCurrentWave){
-            return;
-        }
+        if(!this.projectileTypes) return;
         this.updateCurrentWave();
         
 
@@ -35,7 +42,7 @@ export class WaveHandler {
     get isWaveCleared(){
         return this.gameHandler.etelhordok.length == 0;
     }
-    createProjectile(x,y,direction){
+    createProjectile(x,y,direction,proj){
         // Calculate the length of the direction vector
         let length = Math.sqrt(direction.x * direction.x + direction.y * direction.y);
         
@@ -53,10 +60,10 @@ export class WaveHandler {
         };
         let rotation = Math.random()*5;
         
-        const proj = this.projectileTypes[Math.floor(Math.random()*this.projectileTypes.length)];
-        console.log(proj.src)
-        const size = proj?.size || {x: 50, y: 50};
-        let projectile = new Projectile(this.gameHandler, proj.src, x, y, size.x, size.y, finalDirection, rotation);
+        let projFinal = proj || this.projectileTypes[Math.floor(Math.random()*this.projectileTypes.length)];
+        console.log(projFinal.src)
+        const size = projFinal?.size || {x: 50, y: 50};
+        let projectile = new Projectile(this.gameHandler, projFinal.src, x, y, size.x, size.y, finalDirection, rotation);
         this.gameHandler.projectiles.push(projectile);
     }
     createEtelhordo(num){
@@ -64,8 +71,7 @@ export class WaveHandler {
             let x = Math.random()*1500;
             let y = Math.random()*900;
             let etelhordo = new Etelhordo(this.gameHandler,x,y,100);
-            if(x>this.gameHandler.Ica.width+this.gameHandler.Ica.x
-                &&y>this.gameHandler.Ica.height+this.gameHandler.Ica.y
+            if(!this.collideWithIca({x: etelhordo.hitBoxStartX , y: etelhordo.hitboxStartY, endX: etelhordo.hitBoxEndX, endY: etelhordo.hitboxEndY})
                 &&etelhordo.sizeX+x<this.gameHandler.width
                 &&etelhordo.sizeY+y<this.gameHandler.height){
                     
@@ -74,7 +80,75 @@ export class WaveHandler {
             
         }
     }
+    createProjectileWall(x,y,gapSize,projectile){
+        let projectileSize = projectile.size || 50;
+        console.log(x,y)
+        if(x === -1){
+            let projectileGapStart;
+                projectileGapStart = Math.floor(Math.random() * (this.gameHandler.width/projectileSize));
+                //checks if gap is too far from ica
+            
+            
+            console.log(projectileSize)
+            for (let i = 0; i < this.gameHandler.width/projectileSize; i++) {
+                if(i < projectileGapStart || i > projectileGapStart+gapSize){
+                    let x = i*projectileSize;
+                    let yy = y*this.gameHandler.height;
+                    this.createProjectile(x,yy,{x: 0, y: 1-y*2}, projectile);
+                }
+                
+            }
+
+        }
+        else if(y === -1){
+            let projectileGapStart = Math.floor(Math.random() * (this.gameHandler.height/projectileSize));
+            for (let i = 0; i < this.gameHandler.height/projectileSize; i++) {
+                if(i < projectileGapStart || i > projectileGapStart+gapSize){
+                    let y = i*projectileSize;
+                    let xx = x*this.gameHandler.width;
+                    this.createProjectile(xx,y,{x: 1-x*2, y: 0}, projectile);
+                }
+                
+            }
+        }
+    }
+    createProjectileRing(gapSize,projectile){
+        const icaPosition = {x: this.gameHandler.Ica.x + this.gameHandler.Ica.width/2,
+        y: this.gameHandler.Ica.y + this.gameHandler.Ica.height/2 };
+        let projectileSize = projectile.size || 50;
+        let projectileGapStart = Math.floor(Math.random() * (this.gameHandler.height/projectileSize));
+        let radius = 700;
+        for (let i = 0; i < 360; i+=10) {
+            if(i < projectileGapStart || i > projectileGapStart+gapSize){
+                let x = this.gameHandler.Ica.x+Math.cos(i)*radius;
+                let y = this.gameHandler.Ica.y+Math.sin(i)*radius;
+                let direction = {
+                    x: icaPosition.x - x,
+                    y: icaPosition.y - y
+                };
+                this.createProjectile(x,y,{x: direction.x, y: direction.y}, projectile);
+            }
+            
+        }
+    }
+
+
+
+    collideWithIca(hitbox){
+        const icaHitbox = this.gameHandler.Ica.hitbox;
+        icaHitbox.endX = icaHitbox.x+icaHitbox.width;
+        icaHitbox.endY = icaHitbox.y+icaHitbox.height;
+        if(hitbox.endX > icaHitbox.x
+            && hitbox.x < icaHitbox.endX
+            && hitbox.endY > icaHitbox.y
+            && hitbox.y < icaHitbox.endY){
+                return true;
+            }
+        return false;
+
+    }
     createProjectiles(max){
+        if(!this.projectileTypes) return;
         const icaPosition = {x: this.gameHandler.Ica.x + this.gameHandler.Ica.width/2,
         y: this.gameHandler.Ica.y + this.gameHandler.Ica.height/2 };
         if(this.gameHandler.projectiles.length < max){
@@ -118,12 +192,14 @@ export class WaveHandler {
         this.projectileFrequency = 1000;
         this.gameHandler.etelhordok = [];   
         this.gameHandler.projectiles = [];
-        this.createEtelhordo(5);
+        // this.createEtelhordo(5);
+       
         this.updateCurrentWave = this.updateFirstWave;
         this.nextWave = this.secondWave;
     }
     
     updateFirstWave(){
+        
         this.createProjectiles(5);
        
         
@@ -132,30 +208,31 @@ export class WaveHandler {
     
     secondWave(){
         this.gameHandler.etelhordok = [];   
-        this.gameHandler.projectiles = [];
         this.createEtelhordo(8);
         this.updateCurrentWave = this.updateSecondWave;
-        this.nextWave = null;
+        this.nextWave = this.thirdWave;
+        this.createProjectileWall(1,-1,5,this.projectileTypes[0]);
     }
     updateSecondWave(){
-        this.createProjectiles(8);
+        if(this.gameHandler.projectiles.length == 0){
+
+            this.createProjectileWall(1,-1,5,this.projectileTypes[0]);
+            this.createProjectileWall(0,-1,5,this.projectileTypes[0]);
+        }
+        
+    }
+    thirdWave(){
+        this.gameHandler.etelhordok = [];   
+        this.createEtelhordo(3);
+        this.updateCurrentWave = this.updateThirdWave;
+        this.nextWave = null;
+    }
+    updateThirdWave(){
+        if(this.gameHandler.projectiles.length == 0){
+            // this.createProjectileWall(0,-1,5,this.projectileTypes[0]);
+            this.createProjectileRing(1,this.projectileTypes[0]);
+        }
+        
     }
     
-    // createProjectileWall(x,y,gapSize,projectile){
-    //     let projectileSize = projectile.size;
-    //     if(x = 0){
-    //         let projectileGapStart = Math.floor(Math.random() * (this.gameHandler.height/projectileSize));
-    //         for (let i = 0; i < this.gameHandler.height/projectileSize; i++) {
-    //             if(i < projectileGapStart || i > projectileGapStart+gapSize){
-    //                 let x = i*projectileSize;
-
-    //                 this.createProjectile(x,y,{x: 1, y: 0});
-    //             }
-                
-    //         }
-
-    //     }
-    //     else{
-
-    //     }
 }
