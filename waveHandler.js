@@ -192,7 +192,7 @@ export class WaveHandler {
         this.projectileFrequency = 1000;
         this.gameHandler.etelhordok = [];   
         this.gameHandler.projectiles = [];
-        // this.createEtelhordo(5);
+        this.createEtelhordo(5);
        
         this.updateCurrentWave = this.updateFirstWave;
         this.nextWave = this.secondWave;
