@@ -10,7 +10,8 @@ export class Etelhordo{
         this.sizeY = sizeY;
         this.img = new Image();
         this.spriteImage = new Image();
-        this.spriteImage.src= "/assets/boom/boom1.png";
+        let randomIndex = Math.floor((Math.random()*10)/2)+1;
+        this.spriteImage.src= `/assets/boom/boom${randomIndex}.png`;
         this.img.src =this.imagePath;
         this.healthbar= new HealthBar(this.ctx,100,100,this.x,this.y+this.sizeY-10);
         this.clang = new Audio('./assets/metalclang.mp3');
