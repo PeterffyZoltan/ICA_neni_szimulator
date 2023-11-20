@@ -28,7 +28,6 @@ export class Projectile{
         this.ctx.rotate((this.angle * Math.PI) / 180);
         this.ctx.drawImage(this.image, -this.width / 2, -this.height / 2, this.width, this.height);
         this.ctx.restore();
-         this.drawHitbox();
         
     }
     update(){

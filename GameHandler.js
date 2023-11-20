@@ -29,7 +29,6 @@ export class GameHandler{
         this.ctx.clearRect(0, 0, this.width, this.height);
         this.waveHandler.update();
         this.Ica.update();
-        this.drawHitboxes();
         for (const etelhordo of this.etelhordok) {
             etelhordo.draw();
             
