@@ -33,7 +33,6 @@ export class Ica extends Character{
     gotHit(damage = 10){
         this.healthbar.health -= damage;
         
-        console.log(this.healthbar.health);
         // if(this.healthbar.health <= 0){
         //     this.gameHandler.gameOver();
         // }
@@ -179,12 +178,10 @@ export class Ica extends Character{
         const hitRange = this.hitRange;
         this.gameHandler.etelhordok.forEach(etelhordo => {
             const etelhordoHitbox = {x: etelhordo.hitBoxStartX, y: etelhordo.hitboxStartY, endX: etelhordo.hitBoxEndX, endY: etelhordo.hitboxEndY};
-            // console.log(etelhordoHitbox, hitRange);
             if(etelhordoHitbox.x <= hitRange.endX 
                 && etelhordoHitbox.endX >= hitRange.x 
                 && etelhordoHitbox.endY >= hitRange.y 
                 && etelhordoHitbox.y <= hitRange.endY){
-                    console.log('hit');
                 etelhordo.getHit();
             }
             

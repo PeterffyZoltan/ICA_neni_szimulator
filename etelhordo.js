@@ -50,7 +50,6 @@ export class Etelhordo{
     }
     getHit(){
         this.clang.play();
-        console.log("Ica successfully szétbaszta az ételhordót")
         let damage = 10;
         if (!this.destroyed) {
             this.healthbar.health-=damage;
