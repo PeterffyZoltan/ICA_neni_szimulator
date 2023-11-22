@@ -113,7 +113,6 @@ export class Kanal {
         const hitRange = {x: this.centerX - this.width/2, y: this.centerY - this.height/2, endX: this.centerX + this.width/2, endY: this.centerY + this.height/2}
         this.gameHandler.etelhordok.forEach(etelhordo => {
             const etelhordoHitbox = {x: etelhordo.hitBoxStartX, y: etelhordo.hitboxStartY, endX: etelhordo.hitBoxEndX, endY: etelhordo.hitboxEndY};
-            // console.log(etelhordoHitbox, hitRange);
             if(etelhordoHitbox.x <= hitRange.endX 
                 && etelhordoHitbox.endX >= hitRange.x 
                 && etelhordoHitbox.endY >= hitRange.y 

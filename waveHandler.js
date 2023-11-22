@@ -64,7 +64,6 @@ export class WaveHandler {
         let rotation = Math.random()*5;
         
         let projFinal = proj || this.projectileTypes[Math.floor(Math.random()*this.projectileTypes.length)];
-        console.log(projFinal.src)
         const size = projFinal?.size || {x: 50, y: 50};
         let projectile = new Projectile(this.gameHandler, projFinal.src, x, y, size.x, size.y, finalDirection, rotation);
         this.gameHandler.projectiles.push(projectile);
@@ -85,14 +84,12 @@ export class WaveHandler {
     }
     createProjectileWall(x,y,gapSize,projectile){
         let projectileSize = projectile.size || 50;
-        console.log(x,y)
         if(x === -1){
             let projectileGapStart;
                 projectileGapStart = Math.floor(Math.random() * (this.gameHandler.width/projectileSize));
                 //checks if gap is too far from ica
             
             
-            console.log(projectileSize)
             for (let i = 0; i < this.gameHandler.width/projectileSize; i++) {
                 if(i < projectileGapStart || i > projectileGapStart+gapSize){
                     let x = i*projectileSize;
@@ -157,7 +154,6 @@ export class WaveHandler {
         if(this.gameHandler.projectiles.length < max){
             
             let staticPos = Math.floor(Math.random() * 2);
-            console.log(staticPos)
             if(Math.random() < 0.2){
                 let x = this.gameHandler.width*staticPos;
                 let y = Math.random()*this.gameHandler.height;
