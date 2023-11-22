@@ -4,7 +4,7 @@ import { HealthBar } from "./healthbar.js";
 export class Boss extends Projectile{
     constructor(gameHandler,  x, y, width, height, direction, rotation)
         {
-            super(gameHandler, "./assets/pixelVazso.png", x, y, width, height, direction, rotation);
+            super(gameHandler, "./assets/nemTudomKiEz.png", x, y, width, height, direction, rotation);
             rotation = 0;
             this.speed = 400;
             this.healthbar = new HealthBar(this.gameHandler.ctx, 100, 100, this.centerX - 50, this.centerY+this.height/2+10);
@@ -65,7 +65,7 @@ export class Boss extends Projectile{
        
         getHit(){
             if(this.gameHandler.etelhordok.length > 1) return;
-            let damage = 3;
+            let damage = 5;
             if (!this.destroyed) {
                 this.healthbar.health-=damage;
                 this.healthbar.update();

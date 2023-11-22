@@ -116,11 +116,11 @@ export class WaveHandler {
         const icaPosition = {x: this.gameHandler.Ica.x + this.gameHandler.Ica.width/2,
         y: this.gameHandler.Ica.y + this.gameHandler.Ica.height/2 };
         let projectileSize = projectile.size || 50;
-        let projectileGapStart = Math.floor(Math.random() * (this.gameHandler.height/projectileSize));
+        let projectileGapStart = Math.floor(Math.random() * 360);
         let radius = 700;
         for (let i = 0; i < 360; i+=10) {
             if(i < projectileGapStart || i > projectileGapStart+gapSize){
-                let x = this.gameHandler.Ica.x+Math.cos(i)*radius;
+                let x = this.gameHandler.Ica.x+Math.cos(i)*radius; 
                 let y = this.gameHandler.Ica.y+Math.sin(i)*radius;
                 let direction = {
                     x: icaPosition.x - x,
@@ -215,8 +215,8 @@ export class WaveHandler {
     updateSecondWave(){
         if(this.gameHandler.projectiles.length == 0){
 
-            this.createProjectileWall(1,-1,5,this.projectileTypes[0]);
-            this.createProjectileWall(0,-1,5,this.projectileTypes[0]);
+            this.createProjectileWall(1,-1,6,this.projectileTypes[0]);
+            this.createProjectileWall(0,-1,6,this.projectileTypes[0]);
         }
         
     }
@@ -228,7 +228,7 @@ export class WaveHandler {
     }
     updateThirdWave(){
         if(this.gameHandler.projectiles.length == 0){
-            this.createProjectileRing(1,this.projectileTypes[0]);
+            this.createProjectileRing(60,this.projectileTypes[0]);
         }
         
     }
@@ -249,7 +249,7 @@ export class WaveHandler {
         if(this.gameHandler.etelhordok.length >1){
             return;
         }
-        this.createProjectiles(6);
+        this.createProjectiles(10);
         
         
     }
