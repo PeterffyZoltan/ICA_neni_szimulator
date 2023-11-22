@@ -14,7 +14,7 @@ export class Etelhordo{
         this.spriteImage.src= `/assets/boom${randomIndex}.png`;
         this.img.src =this.imagePath;
         this.healthbar= new HealthBar(this.ctx,100,100,this.x,this.y+this.sizeY-10);
-        this.clang = new Audio('./assets/metalclang.mp3');
+        this.clang = new Audio('./assets/Etelhordo_hang.mp3');
         this.hitBoxStartX = this.x+this.sizeX/5;
         this.hitBoxEndX = this.x+this.sizeX/1.33;
         this.hitboxStartY = this.y+this.sizeY/6;
