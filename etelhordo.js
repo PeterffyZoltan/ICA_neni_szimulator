@@ -21,9 +21,7 @@ export class Etelhordo{
         this.hitboxEndY=this.y+sizeY/1.15; 
         this.gameHandler = Gamehandler;
         this.spriteWidth =100;
-        this.spriteHeight = 20;
-        this.sX = 0;
-        this.sY=0;        
+        this.spriteHeight = 20; 
         this.destroyed = false;
         this.deathTime = 0;
         this.triggeredDeathAnimation = false;
