@@ -3,6 +3,7 @@ import { Etelhordo } from './etelhordo.js';
 import { Projectile } from './projectile.js';
 import { WaveHandler } from './waveHandler.js';
 import { Text } from './text.js';
+import { Kanal } from './kanal.js';
 export class GameHandler{
     #texts = [];
     constructor(ctx, width, height){
@@ -36,9 +37,22 @@ export class GameHandler{
         if (urlParams.has("speed")) {
             const paramSpeed = Math.round((+urlParams.get("speed"))*100)/100;
             if (Number.isFinite(paramSpeed) && paramSpeed != 1 && paramSpeed > 0) {
-                this.timescale = Math.round(paramSpeed*100)/100;
+                this.timescale = paramSpeed;
                 this.speedText = new Text(ctx, this, "Speed: {0}x", this.timescale);
                 this.#texts.push(this.speedText);
+            }
+        }
+
+        
+        this.damageText = undefined;
+        if (urlParams.has("damage")) {
+            const paramDamage = Math.round((+urlParams.get("damage"))*100)/100;
+            console.log(paramDamage)
+            if (Number.isFinite(paramDamage) && paramDamage != Kanal.damage && paramDamage > 0) {
+                console.log(paramDamage)
+                Kanal.damage = paramDamage;
+                this.damageText = new Text(ctx, this, "DMG: {0}", Kanal.damage);
+                this.#texts.push(this.damageText);
             }
         }
 

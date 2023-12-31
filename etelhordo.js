@@ -1,4 +1,5 @@
 import { HealthBar } from "./healthbar.js";
+import { Kanal } from "./kanal.js";
 export class Etelhordo{
     constructor(Gamehandler,x,y,health,sizeX=100,sizeY=100,healthBar){
         this.ctx = Gamehandler.ctx;
@@ -59,9 +60,8 @@ export class Etelhordo{
     }
     getHit(){
         this.clang.play();
-        let damage = 10;
         if (!this.destroyed) {
-            this.healthbar.health-=damage;
+            this.healthbar.health-=Kanal.damage;
             this.healthbar.update();
             
         }

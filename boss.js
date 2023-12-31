@@ -1,5 +1,6 @@
 import { Projectile } from "./projectile.js";
 import { HealthBar } from "./healthbar.js";
+import { Kanal } from "./kanal.js";
 
 export class Boss extends Projectile{
     constructor(gameHandler,  x, y, width, height, direction, rotation)
@@ -7,8 +8,10 @@ export class Boss extends Projectile{
             super(gameHandler, "./assets/nemTudomKiEz.png", x, y, width, height, direction, rotation);
             rotation = 0;
             this.speed = 400;
-            this.healthbar = new HealthBar(this.gameHandler.ctx, 100, 100, this.centerX - 50, this.centerY+this.height/2+10);
-               
+            this.damageFrequency = 50;
+            this.healthbar = new HealthBar(this.gameHandler.ctx, 200, 200, this.centerX - 50, this.centerY+this.height/2+10);
+            this.isCollided = false;
+            this.carryCollisionTime = 0;
         }
         draw(){
             this.update();
@@ -29,8 +32,22 @@ export class Boss extends Projectile{
             this.angle += this.rotation*this.gameHandler.deltaTime;
            
             if(this.checkCollision(this.gameHandler.Ica)){
-                this.gameHandler.Ica.gotHit();
+                if (this.isCollided) {
+                    let loopCount = this.gameHandler.deltaTime*this.damageFrequency+this.carryCollisionTime;
+                    for (let i = 0; i < this.gameHandler.deltaTime*this.damageFrequency; i++) {
+                        this.gameHandler.Ica.gotHit();
+                    }
+                    this.carryCollisionTime = loopCount%1;
+                }
+                else{
+                    this.gameHandler.Ica.gotHit();
+                }
+                this.isCollided = true;
                 // this.gameHandler.projectiles.splice(this.gameHandler.projectiles.indexOf(this), 1);
+            }
+            else{
+                this.isCollided = false;
+                this.carryCollisionTime = 0;
             }
 
 
@@ -65,9 +82,8 @@ export class Boss extends Projectile{
        
         getHit(){
             if(this.gameHandler.etelhordok.length > 1) return;
-            let damage = 5;
             if (!this.destroyed) {
-                this.healthbar.health-=damage;
+                this.healthbar.health-=Kanal.damage;
                 this.healthbar.update();
                 
             }
