@@ -18,6 +18,17 @@ export class GameHandler{
             }
         }
 
+        this.hellText = undefined;
+        this.hell = false;
+        if (urlParams.has("hell")) {
+            const paramHell = !!+urlParams.get("hell");
+            if (paramHell) {
+                this.hell = true;
+                this.hellText = new Text(ctx, this, "HELL{0}", "");
+                this.#texts.push(this.hellText);
+            }
+        }
+
         let icaHP = undefined;
         this.maxHPText = undefined;
         if (urlParams.has("icahp")) {
@@ -67,7 +78,7 @@ export class GameHandler{
         
         this.projectiles = [];
         this.waveHandler = new WaveHandler(this);
-        this.waveHandler.firstWave();
+        this.waveHandler.fourthWaveEnraged();
         this.previousTime = performance.now();
         this.startTime = this.previousTime;
         this.totalTime = 0;

@@ -8,7 +8,8 @@ export class Boss extends Projectile{
             super(gameHandler, "./assets/nemTudomKiEz.png", x, y, width, height, direction, rotation);
             rotation = 0;
             this.speed = 400;
-            this.damageFrequency = 50;
+            this.damageFrequency = 100;
+            this.percentDamage = 0.0075;
             this.healthbar = new HealthBar(this.gameHandler.ctx, 200, 200, this.centerX - 50, this.centerY+this.height/2+10);
             this.isCollided = false;
             this.carryCollisionTime = 0;
@@ -17,8 +18,8 @@ export class Boss extends Projectile{
             this.update();
             super.draw();
             if(this.gameHandler.etelhordok.length > 1) return;
-            this.healthbar.x = this.hitbox.x- this.healthbar.maxHealth/2+ this.hitbox.width/2;
-            this.healthbar.y = this.hitbox.y + this.hitbox.height + 5;
+            this.healthbar.x = this.centerX - 50;
+            this.healthbar.y = this.centerY+this.height/2+10;
             this.healthbar.draw();
             this.healthbar.update();
             if(this.healthbar.health <= 0){
@@ -26,6 +27,12 @@ export class Boss extends Projectile{
             }
             
         }
+
+        dealPercentDamage(){
+            let hp = this.gameHandler.Ica.healthbar;
+            hp.health -= hp.maxHealth * this.percentDamage;
+        }
+
         update(){
             this.centerX += this.Direction.x*this.gameHandler.deltaTime;
             this.centerY += this.Direction.y*this.gameHandler.deltaTime;
@@ -36,11 +43,13 @@ export class Boss extends Projectile{
                     let loopCount = this.gameHandler.deltaTime*this.damageFrequency+this.carryCollisionTime;
                     for (let i = 0; i < this.gameHandler.deltaTime*this.damageFrequency; i++) {
                         this.gameHandler.Ica.gotHit();
+                        this.dealPercentDamage();
                     }
                     this.carryCollisionTime = loopCount%1;
                 }
                 else{
                     this.gameHandler.Ica.gotHit();
+                    this.dealPercentDamage();
                 }
                 this.isCollided = true;
                 // this.gameHandler.projectiles.splice(this.gameHandler.projectiles.indexOf(this), 1);

@@ -1,5 +1,5 @@
 export class Text{
-    static defaultSize = 30;
+    static defaultSize = 25;
     static defaultMeasure = "px";
     static defaultFont = "monospace"
     size = Text.defaultSize;
