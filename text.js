@@ -64,7 +64,9 @@ export class Text{
         this.formatString = formatString;
         this.value = value;
     }
-
+    static IsNullOrWhitespace(string){
+        return !string || !string.replace(/\s/g, '').length
+    }
     /// If invalid: returns null
     /// Returns whether the string is formattable with the given number of arguments
     static IsFormattableWithCount(string, count){
@@ -105,7 +107,7 @@ export class Text{
                         case 0:
                             return false;
                         case 1:
-                            if (!readingArgIndex.replace(/\s/g, '').length) {
+                            if (Text.IsNullOrWhitespace(readingArgIndex)) {
                                 return false;
                             }
                             const idx = +readingArgIndex;
@@ -190,7 +192,7 @@ export class Text{
                         case 0:
                             throw new Error(`Unexpected closing braces at position ${i}`);
                         case 1:
-                            if (!readingArgIndex.replace(/\s/g, '').length) {
+                            if (Text.IsNullOrWhitespace(readingArgIndex)) {
                                 throw new Error(`Missing argument index (whitespace only) at position ${i}`);
                             }
                             const idx = +readingArgIndex;
