@@ -77,7 +77,7 @@ export class GameHandler{
         
         this.projectiles = [];
         this.waveHandler = new WaveHandler(this);
-        this.waveHandler.fourthWaveEnraged();
+        this.waveHandler.firstWave();
         this.previousTime = performance.now();
         this.startTime = this.previousTime;
         this.totalTime = 0;
