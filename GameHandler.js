@@ -89,6 +89,7 @@ export class GameHandler{
     calculateDeltaTime(){
         let currentTime = performance.now();
         this.deltaTime =(currentTime - this.previousTime) / 1000 * this.timescale;
+        this.previousTime = currentTime;
         this.totalTime += this.deltaTime;
     }
     drawHitboxes(){
