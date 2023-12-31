@@ -90,8 +90,6 @@ export class WaveHandler {
         if(x === -1){
             let ratio = Utils.getHeight()/(Utils.getWidth()*1.66); 
             let speed = ratio*700;
-            
-            console.log(speed);
             let projectileGapStart;
                 projectileGapStart = Math.floor(Math.random() * (this.gameHandler.width/projectileSize-1));
                 //checks if gap is too far from ica
@@ -279,7 +277,6 @@ export class WaveHandler {
         let proj0count = 0;
         let proj1count = 0;
         for (const element of this.gameHandler.projectiles) {
-            console.log(element.imageSource == this.projectileTypes[0].src)
             if (element.imageSource == this.projectileTypes[0].src) {
                 proj0count++;
             }

@@ -57,9 +57,7 @@ export class GameHandler{
         this.damageText = undefined;
         if (urlParams.has("damage")) {
             const paramDamage = Math.round((+urlParams.get("damage"))*100)/100;
-            console.log(paramDamage)
             if (Number.isFinite(paramDamage) && paramDamage != Kanal.damage && paramDamage > 0) {
-                console.log(paramDamage)
                 Kanal.damage = paramDamage;
                 this.damageText = new Text(ctx, this, "DMG: {0}", Kanal.damage);
                 this.#texts.push(this.damageText);
