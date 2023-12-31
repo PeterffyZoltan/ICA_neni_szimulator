@@ -16,8 +16,10 @@ export class HealthBar{
     }
     update(){
         this.ctx.beginPath();
-        this.ctx.rect(this.x+this.health,this.y,this.maxHealth-this.health,9.8);
+        const currentHPRatio = (this.health/this.maxHealth)*100;
+        const lostHPRatio = 100-currentHPRatio;
+        this.ctx.rect(this.x+currentHPRatio,this.y,lostHPRatio,10);
         this.ctx.fillStyle ="red";
-        this.ctx.fill()
+        this.ctx.fill();
     }
 }

@@ -43,18 +43,13 @@ export class Etelhordo{
             const currentFrame = Math.floor(this.deathTime / this.deathTimeFrequency);
             const currentX = currentFrame % 9;
             const currentY = Math.floor(currentFrame / 9);
-            // this check ensures that the deltaTime of the frame BEFORE the actual death of this object isn't counted.
-            if (this.triggeredDeathAnimation) {
-                this.deathTime += this.gameHandler.deltaTime;
-            }
-            else{
-                this.triggeredDeathAnimation = true;
-            }
-            //- 
-            //- changed from != to <, to ensure that freezes don't break the code and make the animation permanent
             if (currentY<7) {
-
+                // this check ensures that the deltaTime of the frame BEFORE the actual death of this object isn't counted.
+                if (this.destroyed) {
+                    this.deathTime += this.gameHandler.deltaTime;
+                }
                 this.drawAnimation(currentX, currentY)
+                this.destroyed = true;
             }
             else{
                 this.gameHandler.etelhordok.splice(this.gameHandler.etelhordok.indexOf(this), 1);
