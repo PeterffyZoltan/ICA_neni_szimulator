@@ -1,6 +1,7 @@
 import { Projectile } from "./projectile.js";
 import { HealthBar } from "./healthbar.js";
 import { Kanal } from "./kanal.js";
+import { Ica } from "./Ica.js";
 
 export class Boss extends Projectile{
     constructor(gameHandler,  x, y, width, height, direction, rotation)
@@ -9,7 +10,7 @@ export class Boss extends Projectile{
             rotation = 0;
             this.speed = 400;
             this.damageFrequency = 100;
-            this.percentDamage = 0.0075;
+            this.damageScaling = 0.95;
             this.healthbar = new HealthBar(this.gameHandler.ctx, 200, 200, this.centerX - 50, this.centerY+this.height/2+10);
             this.isCollided = false;
             this.carryCollisionTime = 0;
@@ -29,8 +30,11 @@ export class Boss extends Projectile{
         }
 
         dealPercentDamage(){
-            let hp = this.gameHandler.Ica.healthbar;
-            hp.health -= hp.maxHealth * this.percentDamage;
+            const hp = this.gameHandler.Ica.healthbar;
+            const hpDiff = (hp.maxHealth - Ica.defaultHP);
+            let extraDamage = Math.pow(hpDiff / 10, this.damageScaling);
+
+            hp.health -= extraDamage;
         }
 
         update(){
