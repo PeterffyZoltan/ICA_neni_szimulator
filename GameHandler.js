@@ -8,7 +8,6 @@ export class GameHandler{
     #texts = [];
     constructor(ctx, width, height){
         const urlParams = new URLSearchParams(window.location.search);
-
         this.timerText = undefined;
         if (urlParams.has("timer")) {
             const paramTimer = !!+urlParams.get("timer");
@@ -141,9 +140,10 @@ export class GameHandler{
         }
     }
     gameOver(){
-        window.open("./gameover.html", "_self");
+        
+        window.open("./gameover.html" + window.location.search, "_self");
     }
     gameWin(){
-        window.open("./win.html", "_self");
+        window.open("./win.html" + window.location.search, "_self");
     }
 }
