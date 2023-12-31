@@ -105,7 +105,7 @@ export class GameHandler{
         if (this.timerText == undefined) {
             return;
         }
-        this.timerText.value = this.totalTime;
+        this.timerText.value = Math.round(this.totalTime*1000)/1000;
     }
     drawTexts(){
         let currentY = 0;
