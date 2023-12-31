@@ -93,7 +93,7 @@ export class WaveHandler {
             
             console.log(speed);
             let projectileGapStart;
-                projectileGapStart = Math.floor(Math.random() * (this.gameHandler.width/projectileSize-0.5));
+                projectileGapStart = Math.floor(Math.random() * (this.gameHandler.width/projectileSize-1));
                 //checks if gap is too far from ica
             
             
@@ -110,7 +110,7 @@ export class WaveHandler {
         else if(y === -1){
             let ratio = Utils.getWidth()/(Utils.getHeight()*2);
             let speed = ratio*562.5;
-            let projectileGapStart = Math.floor(Math.random() * (this.gameHandler.height/projectileSize-0.5));
+            let projectileGapStart = Math.floor(Math.random() * (this.gameHandler.height/projectileSize-1));
             for (let i = 0; i < this.gameHandler.height/projectileSize; i++) {
                 if(i < projectileGapStart || i > projectileGapStart+gapSize){
                     let y = i*projectileSize;
@@ -337,7 +337,7 @@ export class WaveHandler {
     fourthWaveEnraged(){
         this.fourthWave();
         this.gameHandler.etelhordok.splice(0, this.gameHandler.etelhordok.length-1);
-        
+
     }
     
 }
