@@ -35,11 +35,9 @@ export class GameHandler{
             // GameOver only runs on 'GotHit', so HP == 0 is no-hit mode.
             if (Number.isSafeInteger(paramHP) && paramHP != Ica.defaultHP) {
                 icaHP = paramHP < 0 ? 0 : paramHP;
+                this.maxHPText = new Text(ctx, this, "MHP: {0}", icaHP);
+                this.#texts.push(this.maxHPText);
             }
-        }
-        if (icaHP != undefined) {
-            this.maxHPText = new Text(ctx, this, "MHP: {0}", icaHP);
-            this.#texts.push(this.maxHPText);
         }
 
         this.timescale = 1;
@@ -63,6 +61,14 @@ export class GameHandler{
                 this.#texts.push(this.damageText);
             }
         }
+        
+        let startWave = 0;
+        if (urlParams.has("wave")) {
+            const paramWave = +urlParams.get("wave");
+            if (Number.isSafeInteger(paramWave)) {
+                startWave = paramWave;
+            }
+        }
 
         this.ctx = ctx;
         this.enemies = [];
@@ -75,7 +81,23 @@ export class GameHandler{
         
         this.projectiles = [];
         this.waveHandler = new WaveHandler(this);
-        this.waveHandler.firstWave();
+        switch (startWave) {
+            case 2:
+                this.waveHandler.secondWave();
+                break;
+            case 3:
+                this.waveHandler.thirdWave();
+                break;
+            case 4:
+                this.waveHandler.fourthWave();
+                break;
+            case 5:
+                this.waveHandler.fourthWaveEnraged();
+                break;
+            default:
+                this.waveHandler.firstWave()
+                break;
+        }
         this.previousTime = performance.now();
         this.startTime = this.previousTime;
         this.totalTime = 0;

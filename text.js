@@ -21,14 +21,14 @@ export class Text{
         return this.#formatString;
     }
     set formatString(value){
-        if (value == this.#formatString) {
+        if (value === this.#formatString) {
             return;
         }
         const isFormattable = Text.IsFormattableWithCount(value, 1);
-        if (isFormattable == null) {
+        if (isFormattable === null) {
             throw new Error("The value was not a valid formattable string");
         }
-        if (isFormattable == false) {
+        if (isFormattable === false) {
             throw new Error("The value was not formattable with 1 element");
         }
         this.#formatString = value;
@@ -39,7 +39,7 @@ export class Text{
         return this.#value;
     }
     set value(value){
-        if (this.#value == value) {
+        if (this.#value === value) {
             return;
         }
         this.#value = value;
