@@ -1,4 +1,5 @@
 export class Kanal {
+    static damage = 10;
     constructor(ctx, width, height, x, y, ica, gameHandler) {
         
         this.context = ctx;

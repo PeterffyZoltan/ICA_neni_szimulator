@@ -1,6 +1,7 @@
 import {Etelhordo} from "./etelhordo.js";
 import { Projectile } from "./projectile.js";
 import {Boss} from "./boss.js";
+import { Utils } from './utils.js';
 
 
 export class WaveHandler {
@@ -45,7 +46,7 @@ export class WaveHandler {
     get isWaveCleared(){
         return this.gameHandler.etelhordok.length == 0;
     }
-    createProjectile(x,y,direction,proj){
+    createProjectile(x,y,direction,proj,speed=500){
         // Calculate the length of the direction vector
         let length = Math.sqrt(direction.x * direction.x + direction.y * direction.y);
         
@@ -54,7 +55,6 @@ export class WaveHandler {
             x: direction.x / length,
             y: direction.y / length
         };
-        let speed = 500; // Change this to the desired speed
         
         // Multiply the normalized direction vector by the speed
         let finalDirection = {
@@ -82,11 +82,16 @@ export class WaveHandler {
             
         }
     }
+    // multiplying ratios, because:
+    // - if the holes are on opposing sides, you need enough time to reach one side, then loop around to the other
+    // - you need to reach the holes before the walls reach the halfway point
     createProjectileWall(x,y,gapSize,projectile){
         let projectileSize = projectile.size || 50;
         if(x === -1){
+            let ratio = Utils.getHeight()/(Utils.getWidth()*1.66); 
+            let speed = ratio*700;
             let projectileGapStart;
-                projectileGapStart = Math.floor(Math.random() * (this.gameHandler.width/projectileSize));
+                projectileGapStart = Math.floor(Math.random() * (this.gameHandler.width/projectileSize-1));
                 //checks if gap is too far from ica
             
             
@@ -94,21 +99,22 @@ export class WaveHandler {
                 if(i < projectileGapStart || i > projectileGapStart+gapSize){
                     let x = i*projectileSize;
                     let yy = y*this.gameHandler.height;
-                    this.createProjectile(x,yy,{x: 0, y: 1-y*2}, projectile);
+                    this.createProjectile(x,yy,{x: 0, y: 1-y*2}, projectile, speed);
                 }
                 
             }
 
         }
         else if(y === -1){
-            let projectileGapStart = Math.floor(Math.random() * (this.gameHandler.height/projectileSize));
+            let ratio = Utils.getWidth()/(Utils.getHeight()*2);
+            let speed = ratio*562.5;
+            let projectileGapStart = Math.floor(Math.random() * (this.gameHandler.height/projectileSize-1));
             for (let i = 0; i < this.gameHandler.height/projectileSize; i++) {
                 if(i < projectileGapStart || i > projectileGapStart+gapSize){
                     let y = i*projectileSize;
                     let xx = x*this.gameHandler.width;
-                    this.createProjectile(xx,y,{x: 1-x*2, y: 0}, projectile);
+                    this.createProjectile(xx,y,{x: 1-x*2, y: 0}, projectile, speed);
                 }
-                
             }
         }
     }
@@ -191,39 +197,74 @@ export class WaveHandler {
         this.projectileFrequency = 1000;
         this.gameHandler.etelhordok = [];   
         this.gameHandler.projectiles = [];
-        this.createEtelhordo(5);
-       
-        this.updateCurrentWave = this.updateFirstWave;
+
+        if (this.gameHandler.hell) {
+            this.createEtelhordo(10);
+            this.updateCurrentWave = this.updateBuffedFirstWave;
+        }
+        else{
+            this.createEtelhordo(5);
+            this.updateCurrentWave = this.updateFirstWave;
+        }
         this.nextWave = this.secondWave;
     }
     
     updateFirstWave(){
         
         this.createProjectiles(5);
-       
+    }
+    updateBuffedFirstWave(){
         
-        
+        this.createProjectiles(10);
     }
     
     secondWave(){
         this.gameHandler.etelhordok = [];   
-        this.createEtelhordo(8);
-        this.updateCurrentWave = this.updateSecondWave;
+        if (this.gameHandler.hell) {
+            this.createEtelhordo(16);
+            this.updateCurrentWave = this.updateBuffedSecondWave;
+        }
+        else{
+            this.createEtelhordo(8);
+            this.updateCurrentWave = this.updateSecondWave;
+        }
         this.nextWave = this.thirdWave;
         this.createProjectileWall(1,-1,5,this.projectileTypes[0]);
     }
     updateSecondWave(){
         if(this.gameHandler.projectiles.length == 0){
-
             this.createProjectileWall(1,-1,6,this.projectileTypes[0]);
             this.createProjectileWall(0,-1,6,this.projectileTypes[0]);
         }
         
     }
+    updateBuffedSecondWave(){
+        if(this.gameHandler.projectiles.length == 0){
+            if (Math.random() < 0.5) {
+                this.createProjectileWall(1,-1,6,this.projectileTypes[0]);
+            }
+            else{
+                this.createProjectileWall(-1,1,6,this.projectileTypes[0]);
+            }
+            if (Math.random() < 0.5) {
+                this.createProjectileWall(0,-1,6,this.projectileTypes[0]);
+            }
+            else{
+                this.createProjectileWall(-1,0,6,this.projectileTypes[0]);
+            }
+        }
+        
+    }
     thirdWave(){
         this.gameHandler.etelhordok = [];   
-        this.createEtelhordo(3);
-        this.updateCurrentWave = this.updateThirdWave;
+        if (this.gameHandler.hell) {
+            this.createEtelhordo(10);
+            this.updateCurrentWave = this.updateBuffedThirdWave;
+        }
+        else{
+            this.createEtelhordo(3);
+            this.updateCurrentWave = this.updateThirdWave;
+        }
         this.nextWave = this.fourthWave;
     }
     updateThirdWave(){
@@ -232,17 +273,49 @@ export class WaveHandler {
         }
         
     }
+    updateBuffedThirdWave(){
+        let proj0count = 0;
+        let proj1count = 0;
+        for (const element of this.gameHandler.projectiles) {
+            if (element.imageSource == this.projectileTypes[0].src) {
+                proj0count++;
+            }
+            else{
+                proj1count++;
+            }
+        }
+        while (proj1count < 5) {
+            const originalProjectileType = this.projectileTypes;
+            this.projectileTypes = this.projectileTypes.slice(1);
+            this.createProjectiles(100);
+            this.projectileTypes = originalProjectileType;
+            proj1count++;
+        }
+        if(proj0count == 0){
+            this.createProjectileRing(40,this.projectileTypes[0]);
+        }
+        
+    }
     fourthWave(){
         this.gameHandler.etelhordok = [];   
-         this.createEtelhordo(7);
-        this.updateCurrentWave = this.updateThirdWave;
+        if (this.gameHandler.hell) {
+            this.createEtelhordo(15);
+            this.updateCurrentWave = this.updateBuffedFourthWave;
+        }
+        else{
+            this.createEtelhordo(7);
+            this.updateCurrentWave = this.updateFourthWave;
+        }
         this.nextWave = null;
         this.gameHandler.projectiles = [];
         let bossX = this.gameHandler.Ica.x>this.gameHandler.width/2? 0: this.gameHandler.width;
         let bossY = this.gameHandler.Ica.y>this.gameHandler.height? 0: this.gameHandler.height;
         let Vazso = new Boss(this.gameHandler,bossX,bossY,100,100, {x: 0, y: 0},0);
         this.gameHandler.etelhordok.push(Vazso);
-        this.updateCurrentWave = this.updateFourthWave;
+        if (this.gameHandler.hell) {
+            Vazso.healthbar.maxHealth *= 5;
+            Vazso.healthbar.health *= 5;
+        }
 
     }
     updateFourthWave(){
@@ -250,8 +323,18 @@ export class WaveHandler {
             return;
         }
         this.createProjectiles(10);
-        
-        
+    }
+    updateBuffedFourthWave(){
+        if(this.gameHandler.etelhordok.length >1){
+            return;
+        }
+        this.createProjectiles(20);
+    }
+
+    fourthWaveEnraged(){
+        this.fourthWave();
+        this.gameHandler.etelhordok.splice(0, this.gameHandler.etelhordok.length-1);
+
     }
     
 }

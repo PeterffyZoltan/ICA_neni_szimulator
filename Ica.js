@@ -3,18 +3,19 @@ import {InputHandler} from './inputHandler.js';
 import {HealthBar} from './healthbar.js';
 import {Kanal} from './kanal.js';
 export class Ica extends Character{
-    constructor(ctx, x, y, width, height, gameHandler){
+    static defaultHP = 100;
+
+    constructor(ctx, x, y, width, height, gameHandler, health = Ica.defaultHP){
         const spriteSrc = './assets/Ica_sprite.png';
         const speed = 800;
         const spriteAnimationFrames = {
             run: {sXMax:8, sY:8, stagger:3},
             hit: {sXMax:6, sY:12, stagger:3}
 
-
         };
         super(ctx, x, y, width, height, spriteSrc, spriteAnimationFrames, speed);
         this.range = 50;
-        this.healthbar = new HealthBar(this.ctx, 100, 100, this.hitbox.x- 50 + this.hitbox.width/2, this.hitbox.y+this.hitbox.height+10);
+        this.healthbar = new HealthBar(this.ctx, health, health, this.hitbox.x- 50 + this.hitbox.width/2, this.hitbox.y+this.hitbox.height+10);
         this.gameHandler = gameHandler;
         this.CurrentState = {...this.spriteAnimationFrames.run , speedX: 0, speedY: 0, sY : 0 ,running: false, hitting: false};
         this.Kanal = new Kanal(this.ctx,  60, 60, 0, 0, this, gameHandler);
@@ -28,16 +29,6 @@ export class Ica extends Character{
         
         super.draw();
         this.Kanal.draw();
-    } 
-
-    gotHit(damage = 10){
-        this.healthbar.health -= damage;
-        
-        // if(this.healthbar.health <= 0){
-        //     this.gameHandler.gameOver();
-        // }
-
-       
     }
 
     update(){
@@ -58,7 +49,7 @@ export class Ica extends Character{
         this.x += this.CurrentState.speedX;
         this.y += this.CurrentState.speedY;
         const hitbox = this.hitbox;
-        this.healthbar.x = hitbox.x- this.healthbar.maxHealth/2+ hitbox.width/2;
+        this.healthbar.x = this.hitbox.x- 50 + this.hitbox.width/2;
         this.healthbar.y = hitbox.y + hitbox.height + 5;
         this.Kanal.basePositionX = hitbox.x- 50 + hitbox.width/2;
         this.Kanal.basePositionY = hitbox.y- 50 + hitbox.height/2;

@@ -84,5 +84,5 @@ function dancingICA() {
 }
 
 function startGame() {
-    window.open("./game.html", "_self");
+    window.open("./game.html" + window.location.search, "_self");
 }
